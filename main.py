@@ -3,21 +3,16 @@
 
 try:
     import wx
-
+    from framePrincipal import FramePrincipal
     try:
         import psyco
         psyco.profile()
     except ImportError:
         print "\nSe recomienda la instalación del compilador en tiempo de ejecución 'Python-Psyco' para mejorar el rendimiento.\n"
 
-    from framePrincipal import FramePrincipal
-    #from database import BaseDeDatos
-
     programa = wx.App()
-
     try:
-        miFrame = wx.Frame(None, -1, 'Py-Deutsch')
-        miFrame.Show()
+        FramePrincipal(None, -1, 'Py-Deutsch')
         programa.MainLoop()
     finally:
         del programa
