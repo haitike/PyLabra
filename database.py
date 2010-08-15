@@ -2,50 +2,58 @@ import sqlite3 as lite
 
 class BaseDeDatos:
     """Clase gestora de base de datos sqlite3 para el programa py-deutsch."""
-    __connection = None
-    __cursor = None
-    __conectado = False  
+    connection = None
+    cursor = None
+    conectado = False  
 
     def __init__ (self, archivo):                     
         try:                                                     
-            self.__connection = lite.connect(archivo) 
+            self.connection = lite.connect(archivo) 
         except lite.Error, error:                     
             print "Error: " + str(error)          
             return                                        
-        self.__cursor = self.__connection.cursor()     
+        self.cursor = self.connection.cursor()     
         self.crearTablaOperacion()
-        self.__conectado = True
+        self.conectado = True
     
     def crearTablaOperacion(self):
-        self.__cursor.execute("create table if not exists tabla1 (numero1 int, numero2 int, signo varchar(1));") 
+        self.cursor.execute("create table if not exists tabla1 (indice int, texto varchar);") 
 
-    def introducir(self, number1, number2, sign):
+    def introducir(self, indice, texto):
         try:
-            self.__cursor.execute("insert into tabla1 values(?,?,?);", (number1,number2,sign))
+            self.cursor.execute("insert into tabla1 values("+indice+","+texto+");")
         except lite.Error, error:
             print "Error: " + str(error)
 
     def extraer(self):
         try:
-            self.__cursor.execute("select * from tabla1;")
-            return self.__cursor.fetchall()
+            self.cursor.execute("select * from tabla1;")
+            lista = []  # Creo una lista (vector)
+            for i in self.cursor.fetchall(): # Recorro cada linea de la base de datos
+                lista.append(i[1])  # Cojo la columna de "texto" de esa linea y la meto en el vector
+            return lista    # Devuelvo ese vector.
         except lite.Error, error:
             print "Error: " + str(error)
-    
-    def borrar(self):
+
+    def borrar(self, indice):
         try:
-            self.__cursor.execute("delete from tabla1;")
-            print "Borrando el historial..."
+            self.cursor.execute("delete from tabla1 WHERE indice = "+indice+";")
+        except lite.Error, error:
+            print "Error: " + str(error)
+
+    def borrarTodo(self):
+        try:
+            self.cursor.execute("delete from tabla1;")
         except lite.Error, error:
             print "Error: " + str(error)
 
     def commit(self):    
-        self.__cursor.commit() 
+        self.connection.commit() 
    
     def cerrar(self):
-        self.__cursor.close()
-        self.__connection.close()
-        self.__conectado = False
+        self.cursor.close()
+        self.connection.close()
+        self.conectado = False
     
     def estaConectado(self):
-        return self.__conectado
+        return self.conectado
