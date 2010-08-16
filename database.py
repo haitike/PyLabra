@@ -17,17 +17,17 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
-        self.cursor.execute("create table if not exists tabla1 (indice int, texto varchar);") 
+        self.cursor.execute("create table if not exists sustantivos (indice int, texto varchar);") 
 
     def introducir(self, indice, texto):
         try:
-            self.cursor.execute("insert into tabla1 values("+indice+","+texto+");")
+            self.cursor.execute("insert into sustantivos values("+indice+",'"+texto+"');")
         except lite.Error, error:
             print "Error: " + str(error)
 
     def extraer(self):
         try:
-            self.cursor.execute("select * from tabla1;")
+            self.cursor.execute("select * from sustantivos;")
             lista = []  # Creo una lista (vector)
             for i in self.cursor.fetchall(): # Recorro cada linea de la base de datos
                 lista.append(i[1])  # Cojo la columna de "texto" de esa linea y la meto en el vector
@@ -37,13 +37,13 @@ class BaseDeDatos:
 
     def borrar(self, indice):
         try:
-            self.cursor.execute("delete from tabla1 WHERE indice = "+indice+";")
+            self.cursor.execute("delete from sustantivos WHERE indice = "+indice+";")
         except lite.Error, error:
             print "Error: " + str(error)
 
     def borrarTodo(self):
         try:
-            self.cursor.execute("delete from tabla1;")
+            self.cursor.execute("delete from sustantivos;")
         except lite.Error, error:
             print "Error: " + str(error)
 
