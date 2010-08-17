@@ -40,7 +40,8 @@ class FramePrincipal(wx.Frame):
         bNuevoContacto = wx.Button(self.panel, -1, 'Introducir Nueva Palabra', (10,10))
         bBorrarAll = wx.Button(self.panel, -1, 'Borrar All', (10,60))
         bQuitarBrowser = wx.Button(self.panel, -1, 'Quitar/Mostrar Browser', (10,110))
-        self.lista = wx.ListBox(self.panel, -1,(180,10),(310,600),self.deutschDB.extraer(), wx.LB_SINGLE)
+        self.lista = wx.ListBox(self.panel, -1,(180,10),(310,600),"", wx.LB_SINGLE)
+        self.rellenarListBox(self.lista, self.deutschDB.extraer())
 
         self.Bind(wx.EVT_BUTTON, self.OnNuevaPalabra, id=bNuevoContacto.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnBorrarTodo, id=bBorrarAll.GetId())
@@ -48,7 +49,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
 
-        #self.CreateStatusBar()
+        self.CreateStatusBar()
         self.Centre()
         self.Show(True)
 
@@ -57,17 +58,18 @@ class FramePrincipal(wx.Frame):
         if nuevaPalabra.ShowModal() == 1:
             datos = nuevaPalabra.GetDatos()      
         
-            #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.
-            self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"])
+            #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.            
+            self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tema"],
+                                          datos["notas"])
             self.deutschDB.commit()
-            self.lista.Set(self.deutschDB.extraer())
+            self.rellenarListBox(self.lista, self.deutschDB.extraer())
 
         nuevaPalabra.Destroy()
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
-            self.lista.Set(self.deutschDB.extraer())
+            self.rellenarListBox(self.lista, self.deutschDB.extraer())
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
@@ -81,3 +83,9 @@ class FramePrincipal(wx.Frame):
     def OnQuitar(self,event):
         self.deutschDB.cerrar()
         self.Destroy()
+
+    def rellenarListBox(self, listbox, array):
+        articulos = { 0 : ",der" , 1 : ",das" , 2 : ",die", None : ""}
+        listbox.Clear() 
+        for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
+            listbox.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[5]) )

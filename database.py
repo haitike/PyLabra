@@ -17,23 +17,20 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
-        self.cursor.execute("create table if not exists palabras (indice int, palabra varchar, genero char(1), plural varchar, traduccion varchar, tema tinyint, notas varchar);") 
+        self.cursor.execute("create table if not exists palabras (indice int, palabra varchar, plural varchar, genero tinyint, traduccion varchar, tema tinyint, notas varchar);") 
         self.cursor.execute("create table if not exists gramatica (indice int, texto varchar);") 
         self.cursor.execute("create table if not exists opciones (nombre varchar, valor boolean);") 
 
-    def introducir(self, indice, palabra):
+    def introducir(self,indice,palabra,plural,genero,traduccion,tema,notas):
         try:
-            self.cursor.execute("insert into palabras values("+indice+",'"+palabra+"',NULL,NULL,NULL,NULL,NULL);")
+            self.cursor.execute("insert into palabras values("+indice+",'"+palabra+"','"+plural+"',"+genero+",'"+traduccion+"',"+tema+",'"+notas+"');")        
         except lite.Error, error:
             print "Error: " + str(error)
 
     def extraer(self):
         try:
             self.cursor.execute("select * from palabras;")
-            lista = []  # Creo una lista (vector)
-            for i in self.cursor.fetchall(): # Recorro cada linea de la base de datos
-                lista.append(i[1])  # Cojo la columna de "texto" de esa linea y la meto en el vector
-            return lista    # Devuelvo ese vector.
+            return self.cursor.fetchall()
         except lite.Error, error:
             print "Error: " + str(error)
 

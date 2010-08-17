@@ -72,7 +72,7 @@ class DialogoNuevaPalabra(wx.Dialog):
     def OnGuardarSalir(self,event):
         self.datos["palabra"] = self.stPalabra.GetValue()
         self.datos["plural"] = self.stPlural.GetValue()
-        self.datos["genero"] = self.rbGenero.GetSelection()
+        self.datos["genero"] = str(self.rbGenero.GetSelection())
         self.datos["traduccion"] = self.stTraduccion.GetValue()
         self.datos["tema"] = self.cbTema.GetValue()
         self.datos["notas"] = self.stNotas.GetValue()     
