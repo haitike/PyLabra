@@ -17,17 +17,19 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
-        self.cursor.execute("create table if not exists sustantivos (indice int, texto varchar);") 
+        self.cursor.execute("create table if not exists palabras (indice int, palabra varchar, genero char(1), plural varchar, traduccion varchar, tema tinyint, notas varchar);") 
+        self.cursor.execute("create table if not exists gramatica (indice int, texto varchar);") 
+        self.cursor.execute("create table if not exists opciones (nombre varchar, valor boolean);") 
 
-    def introducir(self, indice, texto):
+    def introducir(self, indice, palabra):
         try:
-            self.cursor.execute("insert into sustantivos values("+indice+",'"+texto+"');")
+            self.cursor.execute("insert into palabras values("+indice+",'"+palabra+"',NULL,NULL,NULL,NULL,NULL);")
         except lite.Error, error:
             print "Error: " + str(error)
 
     def extraer(self):
         try:
-            self.cursor.execute("select * from sustantivos;")
+            self.cursor.execute("select * from palabras;")
             lista = []  # Creo una lista (vector)
             for i in self.cursor.fetchall(): # Recorro cada linea de la base de datos
                 lista.append(i[1])  # Cojo la columna de "texto" de esa linea y la meto en el vector
@@ -37,13 +39,13 @@ class BaseDeDatos:
 
     def borrar(self, indice):
         try:
-            self.cursor.execute("delete from sustantivos WHERE indice = "+indice+";")
+            self.cursor.execute("delete from palabras WHERE indice = "+indice+";")
         except lite.Error, error:
             print "Error: " + str(error)
 
     def borrarTodo(self):
         try:
-            self.cursor.execute("delete from sustantivos;")
+            self.cursor.execute("delete from palabras;")
         except lite.Error, error:
             print "Error: " + str(error)
 

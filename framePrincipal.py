@@ -1,6 +1,7 @@
 import wx
 import wx.html as html
 from database import BaseDeDatos
+from dialogoNuevaPalabra import DialogoNuevaPalabra
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
@@ -14,6 +15,20 @@ class FramePrincipal(wx.Frame):
         self.panel2 = wx.Panel(self.separador,-1)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
+        buscadorWeb = wx.Panel(self.panel2, -1, size=(-1, 20))
+        buscadorWeb.SetBackgroundColour('#6f6a59')
+        buscadorWeb.SetForegroundColour('WHITE')
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+
+        st = wx.StaticText(buscadorWeb, -1, 'Buscar en WordReference', (5, 5))
+        hbox.Add(st, 1, wx.TOP | wx.BOTTOM | wx.LEFT, 5)
+        self.tcPalabraBuscarWeb = wx.TextCtrl(buscadorWeb, -1, '')
+        hbox.Add(self.tcPalabraBuscarWeb, 0)
+        bBuscarWeb = wx.Button(buscadorWeb, -1, 'Buscar')  
+        hbox.Add(bBuscarWeb, 0)
+        buscadorWeb.SetSizer(hbox)
+
+        vbox.Add(buscadorWeb, 0, wx.EXPAND)
 
         self.browser = html.HtmlWindow(self.panel2, -1, style=wx.NO_BORDER)
         vbox.Add(self.browser, 1, wx.EXPAND)
@@ -22,36 +37,40 @@ class FramePrincipal(wx.Frame):
 
         self.separador.SplitVertically(self.panel, self.panel2)
 
-        self.tcValor = wx.TextCtrl(self.panel, -1, '', (10, 10))
-        bMeter = wx.Button(self.panel, -1, 'Meter', (10,60))
-        bBorrarAll = wx.Button(self.panel, -1, 'Borrar All', (10,110))
-        bBuscar = wx.Button(self.panel, -1, 'Buscar', (10,160))
-        bQuitarBrowser = wx.Button(self.panel, -1, 'Quitar/Mostrar Browser', (10,210))
-        self.lista = wx.ListBox(self.panel, -1,(100,10),(100,160),self.deutschDB.extraer(), wx.LB_SINGLE)
+        bNuevoContacto = wx.Button(self.panel, -1, 'Introducir Nueva Palabra', (10,10))
+        bBorrarAll = wx.Button(self.panel, -1, 'Borrar All', (10,60))
+        bQuitarBrowser = wx.Button(self.panel, -1, 'Quitar/Mostrar Browser', (10,110))
+        self.lista = wx.ListBox(self.panel, -1,(180,10),(310,600),self.deutschDB.extraer(), wx.LB_SINGLE)
 
-        self.Bind(wx.EVT_BUTTON, self.OnPush, id=bMeter.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnNuevaPalabra, id=bNuevoContacto.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnBorrarTodo, id=bBorrarAll.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnQuitarBrowser, id=bQuitarBrowser.GetId())
-        self.Bind(wx.EVT_BUTTON, self.OnBuscar, id=bBuscar.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
 
         #self.CreateStatusBar()
         self.Centre()
         self.Show(True)
 
-    def OnPush(self,event):      
-        # Warning: Actualmente se asigna indice con el GetCount del litbox.El sistema debe mejorarse si en el futuro se permite borrar lineas individuales.
-        self.deutschDB.introducir(str(self.lista.GetCount()),self.tcValor.GetValue())
-        self.deutschDB.commit()
-        self.lista.Set(self.deutschDB.extraer())
+    def OnNuevaPalabra(self,event):      
+        nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
+        if nuevaPalabra.ShowModal() == 1:
+            datos = nuevaPalabra.GetDatos()      
+        
+            #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.
+            self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"])
+            self.deutschDB.commit()
+            self.lista.Set(self.deutschDB.extraer())
+
+        nuevaPalabra.Destroy()
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
             self.lista.Set(self.deutschDB.extraer())
 
-    def OnBuscar(self,event):
-        self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcValor.GetValue())
+    def OnBuscarWeb(self,event):
+        self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
 
     def OnQuitarBrowser(self,event):
         if self.separador.IsSplit():        
