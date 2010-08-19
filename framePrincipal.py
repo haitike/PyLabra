@@ -88,4 +88,4 @@ class FramePrincipal(wx.Frame):
         articulos = { 0 : ",der" , 1 : ",das" , 2 : ",die", None : ""}
         listbox.Clear() 
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
-            listbox.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[5]) )
+            listbox.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[5]) + "|| NOTAS: " + str(linea[6]) )
