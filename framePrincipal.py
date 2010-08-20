@@ -22,7 +22,7 @@ class FramePrincipal(wx.Frame):
 
         st = wx.StaticText(buscadorWeb, -1, 'Buscar en WordReference', (5, 5))
         hbox.Add(st, 1, wx.TOP | wx.BOTTOM | wx.LEFT, 5)
-        self.tcPalabraBuscarWeb = wx.TextCtrl(buscadorWeb, -1, '')
+        self.tcPalabraBuscarWeb = wx.TextCtrl(buscadorWeb, -1, '',size=(150,-1))
         hbox.Add(self.tcPalabraBuscarWeb, 0)
         bBuscarWeb = wx.Button(buscadorWeb, -1, 'Buscar')  
         hbox.Add(bBuscarWeb, 0)
@@ -49,7 +49,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
 
-        self.CreateStatusBar()
+        #self.CreateStatusBar()
         self.Centre()
         self.Show(True)
 
@@ -59,8 +59,8 @@ class FramePrincipal(wx.Frame):
             datos = nuevaPalabra.GetDatos()      
         
             #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.            
-            self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tema"],
-                                          datos["notas"])
+            self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tipo"],
+                                          datos ["tema"],datos["notas"])
             self.deutschDB.commit()
             self.rellenarListBox(self.lista, self.deutschDB.extraer())
 
@@ -85,7 +85,7 @@ class FramePrincipal(wx.Frame):
         self.Destroy()
 
     def rellenarListBox(self, listbox, array):
-        articulos = { 0 : ",der" , 1 : ",das" , 2 : ",die", None : ""}
+        articulos = { 0 : ", der" , 1 : ", das" , 2 : ", die", None : ""}
         listbox.Clear() 
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
-            listbox.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[5]) + "|| NOTAS: " + str(linea[6]) )
+            listbox.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[6]))

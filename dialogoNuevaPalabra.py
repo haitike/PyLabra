@@ -16,34 +16,37 @@ class DialogoNuevaPalabra(wx.Dialog):
               niveles[9] : ("55","56","57","58"),
               niveles[10] : ("59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74",)}
 
-    datos = { "palabra"    : None,
-              "plural"     : None,
-              "genero"     : None,
-              "traduccion" : None,
-              "tema"       : None,
-              "notas"      : None}
+    datos = { "palabra"    : "",
+              "plural"     : "",
+              "genero"     : "NULL",    #NULL de SQL
+              "traduccion" : "",
+              "tipo"       : "NULL",
+              "tema"       : "NULL",
+              "notas"      : ""}
 
     def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, size=(450, 350))
+        wx.Dialog.__init__(self, parent, id, title, size=(450, 380))
 
         panel = wx.Panel(self, -1)
         vbox = wx.BoxSizer(wx.VERTICAL)
 
-        wx.StaticBox(panel, -1, 'Nueva Palabra', (55, 5), (340, 290))
-        wx.StaticText(panel, -1, 'Palabra', (65, 30))
-        self.stPalabra = wx.TextCtrl(panel, -1, '', (145, 25),(220,-1))
-        wx.StaticText(panel, -1, 'Plural', (65, 60))
-        self.stPlural =  wx.TextCtrl(panel, -1, '', (145, 55),(220,-1))
-        wx.StaticText(panel, -1, 'Genero', (65, 90))
-        self.rbGenero = wx.RadioBox(panel,-1,'',(145, 70),(160,28),choices=("der","das","die"),style=wx.NO_BORDER | wx.RA_SPECIFY_COLS)
-        wx.StaticText(panel, -1, 'Traduccion', (65, 120))
-        self.stTraduccion =  wx.TextCtrl(panel, -1, '', (145, 115),(220,-1))
-        wx.StaticText(panel, -1, 'Nivel', (65, 150))
-        self.cbNivel = wx.ComboBox(panel, -1, '1(A1)', (145, 145), (80, 28), choices=(self.niveles), style=wx.CB_READONLY)        
-        wx.StaticText(panel, -1, 'Tema', (240, 150))
-        self.cbTema = wx.ComboBox(panel, -1, '1', (285, 145), (80, 28), choices=(self.temas[self.niveles[0]]), style=wx.CB_READONLY)       
-        wx.StaticText(panel, -1, 'Notas', (65, 180))
-        self.stNotas = wx.TextCtrl(panel, -1, '', (145, 182),(220,100), style=wx.TE_MULTILINE)
+        wx.StaticBox(panel, -1, 'Nueva Palabra', (55, 5), (340, 320))
+        wx.StaticText(panel, -1, 'Tipo', (65, 30))
+        self.rbTipo = wx.RadioBox(panel,-1,'',(145, 10),(160,28),choices=("sust.","verbo","adj.","otro"),style=wx.NO_BORDER | wx.RA_SPECIFY_COLS)
+        wx.StaticText(panel, -1, 'Palabra', (65, 60))
+        self.stPalabra = wx.TextCtrl(panel, -1, '', (145, 55),(220,-1))
+        wx.StaticText(panel, -1, 'Plural', (65, 90))
+        self.stPlural =  wx.TextCtrl(panel, -1, '', (145, 85),(220,-1))
+        wx.StaticText(panel, -1, 'Genero', (65, 120))
+        self.rbGenero = wx.RadioBox(panel,-1,'',(145, 100),(160,28),choices=("der","das","die"),style=wx.NO_BORDER | wx.RA_SPECIFY_COLS)
+        wx.StaticText(panel, -1, 'Traduccion', (65, 150))
+        self.stTraduccion =  wx.TextCtrl(panel, -1, '', (145, 145),(220,-1))
+        wx.StaticText(panel, -1, 'Nivel', (65, 180))
+        self.cbNivel = wx.ComboBox(panel, -1, '1(A1)', (145, 175), (80, 28), choices=(self.niveles), style=wx.CB_READONLY)        
+        wx.StaticText(panel, -1, 'Tema', (240, 180))
+        self.cbTema = wx.ComboBox(panel, -1, '1', (285, 175), (80, 28), choices=(self.temas[self.niveles[0]]), style=wx.CB_READONLY)       
+        wx.StaticText(panel, -1, 'Notas', (65, 210))
+        self.stNotas = wx.TextCtrl(panel, -1, '', (145, 212),(220,100), style=wx.TE_MULTILINE)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         self.bGuardarSalir = wx.Button(self, -1, 'Guardar y Salir')#, size=(70, 30))
@@ -62,6 +65,15 @@ class DialogoNuevaPalabra(wx.Dialog):
         self.Bind(wx.EVT_COMBOBOX, self.OnCambiarNivel, id=self.cbNivel.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnGuardarSalir, id=self.bGuardarSalir.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnSalir, id=self.bSalir.GetId())
+        self.Bind(wx.EVT_RADIOBOX, self.OnCambiarTipo, id=self.rbTipo.GetId())
+
+    def OnCambiarTipo(self,event):
+        if self.rbTipo.GetSelection() == 0: # Si es Sustantivo
+            self.stPlural.Enable(True)
+            self.rbGenero.Enable(True)
+        else:
+            self.stPlural.Enable(False)
+            self.rbGenero.Enable(False)     # Si es Adjetivo, Verbo o Adverbio
 
     def OnCambiarNivel(self,event):
         self.cbTema.Clear()
@@ -71,11 +83,18 @@ class DialogoNuevaPalabra(wx.Dialog):
    
     def OnGuardarSalir(self,event):
         self.datos["palabra"] = self.stPalabra.GetValue()
-        self.datos["plural"] = self.stPlural.GetValue()
-        self.datos["genero"] = str(self.rbGenero.GetSelection())
         self.datos["traduccion"] = self.stTraduccion.GetValue()
+        self.datos["tipo"] = str(self.rbTipo.GetSelection())
         self.datos["tema"] = self.cbTema.GetValue()
         self.datos["notas"] = self.stNotas.GetValue()     
+
+        if self.rbTipo.GetSelection() == 0: # Si es Sustantivo
+            self.datos["plural"] = self.stPlural.GetValue()
+            self.datos["genero"] = str(self.rbGenero.GetSelection())
+        else:
+            self.datos["plural"] = ""
+            self.datos["genero"] = "NULL"
+
         self.Destroy()
         self.SetReturnCode(1)   
 
