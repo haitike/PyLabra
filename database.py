@@ -33,6 +33,12 @@ class BaseDeDatos:
             return self.cursor.fetchall()
         except lite.Error, error:
             print "Error: " + str(error)
+    def extraerNotas(self):
+        try:
+            self.cursor.execute("select notas from palabras ;")
+            return self.cursor.fetchall()
+        except lite.Error, error:
+            print "Error: " + str(error)
 
     def borrar(self, indice):
         try:

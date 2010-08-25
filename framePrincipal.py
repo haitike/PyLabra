@@ -40,8 +40,10 @@ class FramePrincipal(wx.Frame):
         bNuevoContacto = wx.Button(self.panel, -1, 'Introducir Nueva Palabra', (10,10))
         bBorrarAll = wx.Button(self.panel, -1, 'Borrar All', (10,60))
         bQuitarBrowser = wx.Button(self.panel, -1, 'Quitar/Mostrar Browser', (10,110))
-        self.lista = wx.ListBox(self.panel, -1,(180,10),(310,600),"", wx.LB_SINGLE)
-        self.rellenarListBox(self.lista, self.deutschDB.extraer())
+        self.lista = wx.ListBox(self.panel, -1,(180,10),(310,400),"", wx.LB_SINGLE)
+        
+        self.lbNota = wx.ListBox(self.panel, -1,(5,450),(500,400),"", wx.LB_SINGLE)
+        self.rellenarListBoxs(self.lista, self.lbNota, self.deutschDB.extraer())
 
         self.Bind(wx.EVT_BUTTON, self.OnNuevaPalabra, id=bNuevoContacto.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnBorrarTodo, id=bBorrarAll.GetId())
@@ -62,14 +64,14 @@ class FramePrincipal(wx.Frame):
             self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tipo"],
                                           datos ["tema"],datos["notas"])
             self.deutschDB.commit()
-            self.rellenarListBox(self.lista, self.deutschDB.extraer())
+            self.rellenarListBoxs(self.lista, self.lbNota, self.deutschDB.extraer())
 
         nuevaPalabra.Destroy()
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
-            self.rellenarListBox(self.lista, self.deutschDB.extraer())
+            self.rellenarListBoxs(self.lista, self.lbNota, self.deutschDB.extraer())
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
@@ -84,8 +86,10 @@ class FramePrincipal(wx.Frame):
         self.deutschDB.cerrar()
         self.Destroy()
 
-    def rellenarListBox(self, listbox, array):
+    def rellenarListBoxs(self, listbox1, listbox2, array):
         articulos = { 0 : ", der" , 1 : ", das" , 2 : ", die", None : ""}
-        listbox.Clear() 
+        listbox1.Clear() 
+        listbox2.Clear()
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
-            listbox.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[6]))
+            listbox1.Append(str(linea[0]) + " - " + linea[1] + articulos[linea[3]] + " (" + linea[2] + ") ----> Tema " + str(linea[6]))
+            listbox2.Append(str(linea[0]) + " - " + linea[7])
