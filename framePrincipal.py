@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import wx
 import wx.html as html
 from database import BaseDeDatos
@@ -13,6 +16,20 @@ class FramePrincipal(wx.Frame):
         self.separador = wx.SplitterWindow(self, -1)
         self.panel = wx.Panel(self.separador,-1,style=wx.BORDER_SUNKEN)
         self.panel2 = wx.Panel(self.separador,-1)
+
+        # Barra de Menu
+        menu = wx.MenuBar()
+        menuArchivo = wx.Menu()
+        menuArchivo.Append(wx.ID_EXIT, 'Salir', 'Salir de la aplicación')
+        menu.Append(menuArchivo, '&Archivo')
+        self.SetMenuBar(menu)
+
+        # Barra de Herramientas
+        barra_herramientas = self.CreateToolBar()
+        barra_herramientas.AddLabelTool(1, '', wx.Bitmap('./icons/nuevaPalabra.png'), shortHelp="Introduce una nueva palabra")
+        barra_herramientas.AddLabelTool(2, '', wx.Bitmap('./icons/borrarDB.png'), shortHelp="Borra la base de datos")
+        barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap('./icons/mostrarNavegador.png'), shortHelp="Muestra/Oculta el navegador")
+    	barra_herramientas.Realize()
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         buscadorWeb = wx.Panel(self.panel2, -1, size=(-1, 20))
@@ -35,19 +52,17 @@ class FramePrincipal(wx.Frame):
         self.panel2.SetSizer(vbox)
         self.panel.SetFocus()
 
+        self.lbPalabras = wx.ListBox(self.panel, -1,(5,10),(500,400),"", wx.LB_SINGLE)
+        self.lbNota = wx.ListBox(self.panel, -1,(5,420),(500,400),"", wx.LB_SINGLE)
+        self.rellenarListBoxs(self.lbPalabras, self.lbNota, self.deutschDB.extraer())
+
         self.separador.SplitVertically(self.panel, self.panel2)
+        self.separador.Unsplit()
 
-        bNuevoContacto = wx.Button(self.panel, -1, 'Introducir Nueva Palabra', (10,10))
-        bBorrarAll = wx.Button(self.panel, -1, 'Borrar All', (10,60))
-        bQuitarBrowser = wx.Button(self.panel, -1, 'Quitar/Mostrar Browser', (10,110))
-        self.lista = wx.ListBox(self.panel, -1,(180,10),(310,400),"", wx.LB_SINGLE)
-        
-        self.lbNota = wx.ListBox(self.panel, -1,(5,450),(500,400),"", wx.LB_SINGLE)
-        self.rellenarListBoxs(self.lista, self.lbNota, self.deutschDB.extraer())
-
-        self.Bind(wx.EVT_BUTTON, self.OnNuevaPalabra, id=bNuevoContacto.GetId())
-        self.Bind(wx.EVT_BUTTON, self.OnBorrarTodo, id=bBorrarAll.GetId())
-        self.Bind(wx.EVT_BUTTON, self.OnQuitarBrowser, id=bQuitarBrowser.GetId())
+        self.Bind(wx.EVT_MENU, self.OnQuitar, id=wx.ID_EXIT)
+        self.Bind(wx.EVT_TOOL, self.OnNuevaPalabra, id=1)
+        self.Bind(wx.EVT_TOOL, self.OnBorrarTodo, id=2)
+        self.Bind(wx.EVT_TOOL, self.OnQuitarBrowser, id=3)
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
 
@@ -61,17 +76,17 @@ class FramePrincipal(wx.Frame):
             datos = nuevaPalabra.GetDatos()      
         
             #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.            
-            self.deutschDB.introducir(str(self.lista.GetCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tipo"],
+            self.deutschDB.introducir(str(self.lbPalabras.GetCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tipo"],
                                           datos ["tema"],datos["notas"])
             self.deutschDB.commit()
-            self.rellenarListBoxs(self.lista, self.lbNota, self.deutschDB.extraer())
+            self.rellenarListBoxs(self.lbPalabras, self.lbNota, self.deutschDB.extraer())
 
         nuevaPalabra.Destroy()
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
-            self.rellenarListBoxs(self.lista, self.lbNota, self.deutschDB.extraer())
+            self.rellenarListBoxs(self.lbPalabras, self.lbNota, self.deutschDB.extraer())
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
