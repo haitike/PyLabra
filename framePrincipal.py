@@ -18,17 +18,19 @@ class FramePrincipal(wx.Frame):
         self.panel2 = wx.Panel(self.separador,-1)
 
         # Barra de Menu
-        menu = wx.MenuBar()
-        menuArchivo = wx.Menu()
-        menuArchivo.Append(wx.ID_EXIT, 'Salir', 'Salir de la aplicación')
-        menu.Append(menuArchivo, '&Archivo')
-        self.SetMenuBar(menu)
+        #menu = wx.MenuBar()
+        #menuArchivo = wx.Menu()
+        #menuArchivo.Append(wx.ID_EXIT, 'Salir', 'Salir de la aplicacion')
+        #menu.Append(menuArchivo, '&Archivo')
+        #self.SetMenuBar(menu)
 
         # Barra de Herramientas
         barra_herramientas = self.CreateToolBar()
         barra_herramientas.AddLabelTool(1, '', wx.Bitmap('./icons/nuevaPalabra.png'), shortHelp="Introduce una nueva palabra")
         barra_herramientas.AddLabelTool(2, '', wx.Bitmap('./icons/borrarDB.png'), shortHelp="Borra la base de datos")
         barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap('./icons/mostrarNavegador.png'), shortHelp="Muestra/Oculta el navegador")
+        barra_herramientas.AddSeparator()
+        barra_herramientas.AddLabelTool(4, '', wx.Bitmap('./icons/salir.png'), shortHelp="Salir")
     	barra_herramientas.Realize()
 
         vbox = wx.BoxSizer(wx.VERTICAL)
@@ -65,7 +67,7 @@ class FramePrincipal(wx.Frame):
         self.lvPalabras.InsertColumn(1,"Palabra")
         self.lvPalabras.InsertColumn(2,"Genero")
         self.lvPalabras.InsertColumn(3,"Plural")
-        self.lvPalabras.InsertColumn(4,"Traducción")
+        self.lvPalabras.InsertColumn(4,"Traduccion")
         self.lvPalabras.InsertColumn(5,"Tipo")        
         self.lvPalabras.InsertColumn(6,"Tema")
         self.lvPalabras.InsertColumn(7,"Notas")
@@ -81,10 +83,11 @@ class FramePrincipal(wx.Frame):
         self.separador.Unsplit()
 
         # Eventos
-        self.Bind(wx.EVT_MENU, self.OnQuitar, id=wx.ID_EXIT)
+        #self.Bind(wx.EVT_MENU, self.OnQuitar, id=wx.ID_EXIT)
         self.Bind(wx.EVT_TOOL, self.OnNuevaPalabra, id=1)
         self.Bind(wx.EVT_TOOL, self.OnBorrarTodo, id=2)
         self.Bind(wx.EVT_TOOL, self.OnQuitarBrowser, id=3)
+        self.Bind(wx.EVT_TOOL, self.OnQuitar, id=4)
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
 
