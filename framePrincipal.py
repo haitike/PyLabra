@@ -83,6 +83,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.OnQuitar, id=4)
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
+        self.Bind(wx.EVT_LIST_COL_CLICK, self.OnOrdenar, id=self.lvPalabras.GetId())
 
         self.Centre()
         self.Show(True)
@@ -118,6 +119,9 @@ class FramePrincipal(wx.Frame):
     def OnQuitar(self,event):
         self.deutschDB.cerrar()
         self.Destroy()
+
+    def OnOrdenar(self,event):
+        print event.GetColumn()
 
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
