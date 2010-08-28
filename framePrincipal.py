@@ -13,17 +13,13 @@ class FramePrincipal(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title,size=(1024,768))
 
+        # Creo los dos paneles, un sizer y un separador
         self.separador = wx.SplitterWindow(self, -1)
         self.panel = wx.Panel(self.separador,-1,style=wx.BORDER_SUNKEN)
         self.panel2 = wx.Panel(self.separador,-1)
-
-        # Barra de Menu
-        #menu = wx.MenuBar()
-        #menuArchivo = wx.Menu()
-        #menuArchivo.Append(wx.ID_EXIT, 'Salir', 'Salir de la aplicacion')
-        #menu.Append(menuArchivo, '&Archivo')
-        #self.SetMenuBar(menu)
-
+        vboxNavegadorWeb = wx.BoxSizer(wx.VERTICAL)
+        hboxBuscarWeb = wx.BoxSizer(wx.HORIZONTAL)
+        
         # Barra de Herramientas
         barra_herramientas = self.CreateToolBar()
         barra_herramientas.AddLabelTool(1, '', wx.Bitmap('./icons/nuevaPalabra.png'), shortHelp="Introduce una nueva palabra")
@@ -33,35 +29,33 @@ class FramePrincipal(wx.Frame):
         barra_herramientas.AddLabelTool(4, '', wx.Bitmap('./icons/salir.png'), shortHelp="Salir")
     	barra_herramientas.Realize()
 
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        # Barra de Busqueda del Navegador Web.
         buscadorWeb = wx.Panel(self.panel2, -1, size=(-1, 20))
         buscadorWeb.SetBackgroundColour('#6f6a59')
         buscadorWeb.SetForegroundColour('WHITE')
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-
-        st = wx.StaticText(buscadorWeb, -1, 'Buscar en WordReference', (5, 5))
-        hbox.Add(st, 1, wx.TOP | wx.BOTTOM | wx.LEFT, 5)
+        stBuscarWeb = wx.StaticText(buscadorWeb, -1, 'Buscar en WordReference', (5, 5))
         self.tcPalabraBuscarWeb = wx.TextCtrl(buscadorWeb, -1, '',size=(150,-1))
-        hbox.Add(self.tcPalabraBuscarWeb, 0)
         bBuscarWeb = wx.Button(buscadorWeb, -1, 'Buscar')  
-        hbox.Add(bBuscarWeb, 0)
-        buscadorWeb.SetSizer(hbox)
-
-        vbox.Add(buscadorWeb, 0, wx.EXPAND)
-
+        hboxBuscarWeb.Add(stBuscarWeb, 1, wx.TOP | wx.BOTTOM | wx.LEFT, 5)
+        hboxBuscarWeb.Add(self.tcPalabraBuscarWeb, 0)        
+        hboxBuscarWeb.Add(bBuscarWeb, 0)
+        buscadorWeb.SetSizer(hboxBuscarWeb)
+        
+        # Navegador Web
         self.browser = html.HtmlWindow(self.panel2, -1, style=wx.NO_BORDER)
-        vbox.Add(self.browser, 1, wx.EXPAND)
-        self.panel2.SetSizer(vbox)
+        vboxNavegadorWeb.Add(buscadorWeb, 0, wx.EXPAND)
+        vboxNavegadorWeb.Add(self.browser, 1, wx.EXPAND)
+        self.panel2.SetSizer(vboxNavegadorWeb)
         self.panel.SetFocus()
 
-        # LisBox
+        # ListBox (Panel 1)
         self.lbNota = wx.ListBox(self.panel, -1,(5,420),(500,400),"", wx.LB_SINGLE)
 
         # LAS DOS LINEAS DE ABAJO SON EQUIVALENTES. LISTVIEW ES UN LISTCTRL CON ESTILO LC_REPORT.
         #self.lcPalabras = wx.ListCtrl(self.panel, -1,(5,10),(500,400), style=wx.LC_REPORT)
         #self.lcPalabras = wx.ListView(self.panel, -1,(5,10),(500,400))
 
-        # ListView        
+        # ListView (Panel 1)        
         self.lvPalabras = wx.ListView(self.panel, -1,(5,10),(500,400))
         self.lvPalabras.InsertColumn(0,"#")
         self.lvPalabras.InsertColumn(1,"Palabra")
@@ -82,8 +76,7 @@ class FramePrincipal(wx.Frame):
         self.separador.SplitVertically(self.panel, self.panel2)
         self.separador.Unsplit()
 
-        # Eventos
-        #self.Bind(wx.EVT_MENU, self.OnQuitar, id=wx.ID_EXIT)
+        # EVENTOS
         self.Bind(wx.EVT_TOOL, self.OnNuevaPalabra, id=1)
         self.Bind(wx.EVT_TOOL, self.OnBorrarTodo, id=2)
         self.Bind(wx.EVT_TOOL, self.OnQuitarBrowser, id=3)
@@ -144,3 +137,4 @@ class FramePrincipal(wx.Frame):
             listview.SetStringItem(linea[0],5, tipos[linea[5]])
             listview.SetStringItem(linea[0],6, str(linea[6]))
             listview.SetStringItem(linea[0],7, linea[7])
+            # Pendiente: mirar correctamente el asignamiento del índice de la fila y del atributo data del listview.
