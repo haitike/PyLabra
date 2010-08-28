@@ -105,7 +105,8 @@ class FramePrincipal(wx.Frame):
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
-            self.rellenarListBoxs(self.lbPalabras, self.lbNota, self.deutschDB.extraer())
+            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
+            self.rellenarListView(self.lvPalabras, self.deutschDB.extraer())
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
