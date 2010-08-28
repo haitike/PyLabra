@@ -17,13 +17,13 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
-        self.cursor.execute("create table if not exists palabras (indice int, palabra varchar, plural varchar, genero tinyint, traduccion varchar, tipo tinyint, tema tinyint, notas varchar);") 
+        self.cursor.execute("create table if not exists palabras (indice int, palabra varchar, genero tinyint, plural varchar,  traduccion varchar, tipo tinyint, tema tinyint, notas varchar);") 
         self.cursor.execute("create table if not exists gramatica (indice int, texto varchar);") 
         self.cursor.execute("create table if not exists opciones (nombre varchar, valor boolean);") 
 
-    def introducir(self,indice,palabra,plural,genero,traduccion,tipo,tema,notas):
+    def introducir(self,indice,palabra,genero,plural,traduccion,tipo,tema,notas):
         try:
-            self.cursor.execute("insert into palabras values("+indice+",'"+palabra+"','"+plural+"',"+genero+",'"+traduccion+"',"+tipo+","+tema+",'"+notas+"');")        
+            self.cursor.execute("insert into palabras values("+indice+",'"+palabra+"',"+genero+",'"+plural+"','"+traduccion+"',"+tipo+","+tema+",'"+notas+"');")        
         except lite.Error, error:
             print "Error: " + str(error)
 

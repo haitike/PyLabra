@@ -6,6 +6,35 @@ import wx.html as html
 from database import BaseDeDatos
 from dialogoNuevaPalabra import DialogoNuevaPalabra
 
+class ListViewVirtual(wx.ListView):
+    articulos = { 0 : "der" , 1 : "das" , 2 : "die", None : ""}
+    tipos = { 0 : "sustantivo" , 1 : "verbo" , 2 : "adjetivo", 3 : "Otro"}
+    
+    def __init__(self, parent, pos, size,array):
+        wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL)
+
+        self.InsertColumn(0,"#")
+        self.InsertColumn(1,"Palabra")
+        self.InsertColumn(2,"Genero")
+        self.InsertColumn(3,"Plural")
+        self.InsertColumn(4,"Traduccion")
+        self.InsertColumn(5,"Tipo")        
+        self.InsertColumn(6,"Tema")
+        self.InsertColumn(7,"Notas")
+        self.SetColumnWidth(0,20)#wx.LIST_AUTOSIZE)
+        for i in range(1,8): self.SetColumnWidth(i,65)#wx.LIST_AUTOSIZE)        
+        
+        self.OnRellenar(array)
+    
+    def OnRellenar(self, array):
+        self.array = array
+        self.SetItemCount(len(self.array))
+    
+    def OnGetItemText(self, item, col):
+        if col == 2: return self.articulos[self.array[item][col]]
+        if col == 5: return self.tipos[self.array[item][col]]
+        else:        return "%s" % (self.array[item][col])
+
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
     deutschDB = BaseDeDatos("deutsch.db")
@@ -51,26 +80,11 @@ class FramePrincipal(wx.Frame):
         # ListBox (Panel 1)
         self.lbNota = wx.ListBox(self.panel, -1,(5,420),(500,400),"", wx.LB_SINGLE)
 
-        # LAS DOS LINEAS DE ABAJO SON EQUIVALENTES. LISTVIEW ES UN LISTCTRL CON ESTILO LC_REPORT.
-        #self.lcPalabras = wx.ListCtrl(self.panel, -1,(5,10),(500,400), style=wx.LC_REPORT)
-        #self.lcPalabras = wx.ListView(self.panel, -1,(5,10),(500,400))
-
         # ListView (Panel 1)        
-        self.lvPalabras = wx.ListView(self.panel, -1,(5,10),(500,400))
-        self.lvPalabras.InsertColumn(0,"#")
-        self.lvPalabras.InsertColumn(1,"Palabra")
-        self.lvPalabras.InsertColumn(2,"Genero")
-        self.lvPalabras.InsertColumn(3,"Plural")
-        self.lvPalabras.InsertColumn(4,"Traduccion")
-        self.lvPalabras.InsertColumn(5,"Tipo")        
-        self.lvPalabras.InsertColumn(6,"Tema")
-        self.lvPalabras.InsertColumn(7,"Notas")
-        self.lvPalabras.SetColumnWidth(0,20)#wx.LIST_AUTOSIZE)
-        for i in range(1,8): self.lvPalabras.SetColumnWidth(i,65)#wx.LIST_AUTOSIZE)
+        self.lvPalabras = ListViewVirtual(self.panel,(5,10),(500,400),self.deutschDB.extraer())
 
         # Rellenados Automáticos
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())        
-        self.rellenarListView(self.lvPalabras, self.deutschDB.extraer())   
 
         # La ventana comienza sin dividir.
         self.separador.SplitVertically(self.panel, self.panel2)
@@ -94,19 +108,18 @@ class FramePrincipal(wx.Frame):
             datos = nuevaPalabra.GetDatos()      
         
             #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.            
-            self.deutschDB.introducir(str(self.lvPalabras.GetItemCount()),datos["palabra"],datos["plural"],datos["genero"],datos["traduccion"],datos["tipo"],
+            self.deutschDB.introducir(str(self.lvPalabras.GetItemCount()),datos["palabra"],datos["genero"],datos["plural"],datos["traduccion"],datos["tipo"],
                                           datos ["tema"],datos["notas"])
             self.deutschDB.commit()
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-            self.rellenarListView(self.lvPalabras, self.deutschDB.extraer())   
-
+            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
         nuevaPalabra.Destroy()
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-            self.rellenarListView(self.lvPalabras, self.deutschDB.extraer())
+            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
@@ -128,18 +141,3 @@ class FramePrincipal(wx.Frame):
         listbox.Clear() 
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
             listbox.Append(str(linea[0]) + " - " + linea[7])
-
-    def rellenarListView(self, listview, array):
-        articulos = { 0 : "der" , 1 : "das" , 2 : "die", None : ""}
-        tipos = { 0 : "sustantivo" , 1 : "verbo" , 2 : "adjetivo", 3 : "Otro"}
-        listview.DeleteAllItems() 
-        for linea in array:
-            listview.InsertStringItem(linea[0], str(linea[0]))
-            listview.SetStringItem(linea[0],1, linea[1])
-            listview.SetStringItem(linea[0],2, articulos[linea[3]])
-            listview.SetStringItem(linea[0],3, linea[2])
-            listview.SetStringItem(linea[0],4, linea[4])
-            listview.SetStringItem(linea[0],5, tipos[linea[5]])
-            listview.SetStringItem(linea[0],6, str(linea[6]))
-            listview.SetStringItem(linea[0],7, linea[7])
-            # Pendiente: mirar correctamente el asignamiento del índice de la fila y del atributo data del listview.
