@@ -17,7 +17,7 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
-        self.cursor.execute("create table if not exists palabras (indice int, palabra varchar, genero tinyint, plural varchar,  traduccion varchar, tipo tinyint, tema tinyint, notas varchar);") 
+        self.cursor.execute("create table if not exists palabras (No int, Palabra varchar, Genero tinyint, Plural varchar,  Traduccion varchar, Tipo tinyint, Tema tinyint, Notas varchar);") 
         self.cursor.execute("create table if not exists gramatica (indice int, texto varchar);") 
         self.cursor.execute("create table if not exists opciones (nombre varchar, valor boolean);") 
 
@@ -27,9 +27,9 @@ class BaseDeDatos:
         except lite.Error, error:
             print "Error: " + str(error)
 
-    def extraer(self):
+    def extraer(self,criterio="No", orden="ASC"):
         try:
-            self.cursor.execute("select * from palabras;")
+            self.cursor.execute("select * from palabras ORDER BY "+criterio+" "+orden+";")
             return self.cursor.fetchall()
         except lite.Error, error:
             print "Error: " + str(error)

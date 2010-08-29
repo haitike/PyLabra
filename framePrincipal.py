@@ -6,14 +6,14 @@ import wx.html as html
 from database import BaseDeDatos
 from dialogoNuevaPalabra import DialogoNuevaPalabra
 
-class ListViewVirtual(wx.ListView):
+class ListViewVirtual(wx.ListCtrl):
     articulos = { 0 : "der" , 1 : "das" , 2 : "die", None : ""}
     tipos = { 0 : "sustantivo" , 1 : "verbo" , 2 : "adjetivo", 3 : "Otro"}
     
     def __init__(self, parent, pos, size,array):
         wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL)
 
-        self.InsertColumn(0,"#")
+        self.InsertColumn(0,"No")
         self.InsertColumn(1,"Palabra")
         self.InsertColumn(2,"Genero")
         self.InsertColumn(3,"Plural")
@@ -21,7 +21,7 @@ class ListViewVirtual(wx.ListView):
         self.InsertColumn(5,"Tipo")        
         self.InsertColumn(6,"Tema")
         self.InsertColumn(7,"Notas")
-        self.SetColumnWidth(0,20)#wx.LIST_AUTOSIZE)
+        self.SetColumnWidth(0,30)#wx.LIST_AUTOSIZE)
         for i in range(1,8): self.SetColumnWidth(i,65)#wx.LIST_AUTOSIZE)        
         
         self.OnRellenar(array)
@@ -135,7 +135,9 @@ class FramePrincipal(wx.Frame):
         self.Destroy()
 
     def OnOrdenar(self,event):
-        print event.GetColumn()
+        criterio = self.lvPalabras.GetColumn(event.GetColumn()).GetText() # Cojo el nombre de la columna
+        array_ordenado = self.deutschDB.extraer(criterio)  # consulta SQL ORDER BY ese nombre de columna
+        self.lvPalabras.OnRellenar(array_ordenado)    # Relleno el listview con el array ordenado
 
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
