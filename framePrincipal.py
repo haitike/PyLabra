@@ -11,7 +11,7 @@ class ListViewVirtual(wx.ListCtrl):
     tipos = { 0 : "sustantivo" , 1 : "verbo" , 2 : "adjetivo", 3 : "Otro"}
     
     def __init__(self, parent, pos, size,array):
-        wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL)
+        wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_VRULES|wx.LC_HRULES)
 
         self.InsertColumn(0,"No")
         self.InsertColumn(1,"Palabra")
@@ -77,11 +77,15 @@ class FramePrincipal(wx.Frame):
         self.panel2.SetSizer(vboxNavegadorWeb)
         self.panel.SetFocus()
 
-        # ListBox (Panel 1)
-        self.lbNota = wx.ListBox(self.panel, -1,(5,420),(500,400),"", wx.LB_SINGLE)
+        # Filtrador
+        self.scFiltrar = wx.SearchCtrl(self.panel, -1, pos=(5,10), size=(170,26), style=wx.TE_PROCESS_ENTER)
+        self.scFiltrar.ShowCancelButton(True)
 
         # ListView (Panel 1)        
-        self.lvPalabras = ListViewVirtual(self.panel,(5,10),(500,400),self.deutschDB.extraer())
+        self.lvPalabras = ListViewVirtual(self.panel,(5,50),(500,400),self.deutschDB.extraer())
+
+        # ListBox (Panel 1)
+        self.lbNota = wx.ListBox(self.panel, -1,(5,460),(500,360),"", wx.LB_SINGLE)
 
         # Rellenados Automáticos
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())        
@@ -98,7 +102,10 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
         self.Bind(wx.EVT_LIST_COL_CLICK, self.OnOrdenar, id=self.lvPalabras.GetId())
-
+        self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
+        self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
+        self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
+        
         self.Centre()
         self.Show(True)
 
@@ -138,6 +145,12 @@ class FramePrincipal(wx.Frame):
         criterio = self.lvPalabras.GetColumn(event.GetColumn()).GetText() # Cojo el nombre de la columna
         array_ordenado = self.deutschDB.extraer(criterio)  # consulta SQL ORDER BY ese nombre de columna
         self.lvPalabras.OnRellenar(array_ordenado)    # Relleno el listview con el array ordenado
+
+    def OnFiltrar(self,event):
+        print self.scFiltrar.GetValue()
+        
+    def OnCancelarFiltrar(self,event):
+        self.scFiltrar.Clear()
 
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
