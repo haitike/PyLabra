@@ -37,8 +37,12 @@ class ListViewVirtual(wx.ListCtrl):
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
+    # ATRIBUTOS
     deutschDB = BaseDeDatos("deutsch.db")
+    criterio = "No"
+    orden = "ASC"
 
+    # MAIN
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title,size=(1024,768))
 
@@ -82,13 +86,13 @@ class FramePrincipal(wx.Frame):
         self.scFiltrar.ShowCancelButton(True)
 
         # ListView (Panel 1)        
-        self.lvPalabras = ListViewVirtual(self.panel,(5,50),(500,400),self.deutschDB.extraer())
+        self.lvPalabras = ListViewVirtual(self.panel,(5,50),(500,400),self.deutschDB.extraer(self.criterio,self.orden))
 
         # ListBox (Panel 1)
         self.lbNota = wx.ListBox(self.panel, -1,(5,460),(500,360),"", wx.LB_SINGLE)
 
         # Rellenados Automáticos
-        self.rellenarListBox(self.lbNota, self.deutschDB.extraer())        
+        self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))        
 
         # La ventana comienza sin dividir.
         self.separador.SplitVertically(self.panel, self.panel2)
@@ -109,6 +113,7 @@ class FramePrincipal(wx.Frame):
         self.Centre()
         self.Show(True)
 
+    # METODOS
     def OnNuevaPalabra(self,event):      
         nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
         if nuevaPalabra.ShowModal() == 1:
@@ -118,15 +123,15 @@ class FramePrincipal(wx.Frame):
             self.deutschDB.introducir(str(self.lvPalabras.GetItemCount()),datos["palabra"],datos["genero"],datos["plural"],datos["traduccion"],datos["tipo"],
                                           datos ["tema"],datos["notas"])
             self.deutschDB.commit()
-            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+            self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
+            self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
         nuevaPalabra.Destroy()
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
-            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+            self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
+            self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
@@ -143,11 +148,19 @@ class FramePrincipal(wx.Frame):
 
     def OnOrdenar(self,event):
         criterio = self.lvPalabras.GetColumn(event.GetColumn()).GetText() # Cojo el nombre de la columna
-        array_ordenado = self.deutschDB.extraer(criterio)  # consulta SQL ORDER BY ese nombre de columna
+        if self.criterio == criterio:   # Compruebo que el anterior criterio y el nuevo sea el mismo.
+            if self.orden == "DESC":    # En caso de serlo intercambiamos entre ASC y DESC
+                self.orden = "ASC" 
+            else: 
+                self.orden = "DESC"
+        else:                           # Guardamos el criterio para que sirva para las demás funciones (filtrar, nueva_palabra, etc.)
+            self.criterio = criterio 
+            self.orden = "ASC"
+        array_ordenado = self.deutschDB.extraer(self.criterio,self.orden)  # consulta SQL ORDER BY ese nombre de columna
         self.lvPalabras.OnRellenar(array_ordenado)    # Relleno el listview con el array ordenado
 
     def OnFiltrar(self,event):
-        array_ordenado = self.deutschDB.extraer()
+        array_ordenado = self.deutschDB.extraer(self.criterio,self.orden)
         array_filtrado = []
         for linea in array_ordenado:
             coincidencia = False
@@ -161,7 +174,7 @@ class FramePrincipal(wx.Frame):
         
     def OnCancelarFiltrar(self,event):
         self.scFiltrar.Clear()
-        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
 
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
