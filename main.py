@@ -15,6 +15,8 @@
 # along with BoxVSCircles.  If not, see <http://www.gnu.org/licenses/>.
 
 try:
+    import wxversion
+    wxversion.select("2.8") # Forzando la version 2.8
     import wx
     from framePrincipal import FramePrincipal
     try:
