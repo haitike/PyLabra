@@ -147,10 +147,21 @@ class FramePrincipal(wx.Frame):
         self.lvPalabras.OnRellenar(array_ordenado)    # Relleno el listview con el array ordenado
 
     def OnFiltrar(self,event):
-        print self.scFiltrar.GetValue()
+        array_ordenado = self.deutschDB.extraer()
+        array_filtrado = []
+        for linea in array_ordenado:
+            coincidencia = False
+            for i in (1,3,4,7): # 1 = palabra, 3 = plural, 4 = traduccion, 7 = notas
+                if linea[i].count(self.scFiltrar.GetValue()) > 0:
+                    coincidencia = True
+            if coincidencia == True:
+                array_filtrado.append(linea)
+
+        self.lvPalabras.OnRellenar(array_filtrado)
         
     def OnCancelarFiltrar(self,event):
         self.scFiltrar.Clear()
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
 
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
