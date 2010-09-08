@@ -5,30 +5,8 @@ import wx
 import wx.html as html
 from database import BaseDeDatos
 from dialogoNuevaPalabra import DialogoNuevaPalabra
-
-class ListViewVirtual(wx.ListCtrl):
-    def __init__(self, parent, pos, size,array):
-        wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_VRULES|wx.LC_HRULES)
-
-        self.InsertColumn(0,"No")
-        self.InsertColumn(1,"Palabra")
-        self.InsertColumn(2,"Genero")
-        self.InsertColumn(3,"Plural")
-        self.InsertColumn(4,"Traduccion")
-        self.InsertColumn(5,"Tipo")        
-        self.InsertColumn(6,"Tema")
-        self.InsertColumn(7,"Notas")
-        self.SetColumnWidth(0,30)
-        for i in range(1,8): self.SetColumnWidth(i,65)#wx.LIST_AUTOSIZE)        
-        
-        self.OnRellenar(array)
-    
-    def OnRellenar(self, array):
-        self.array = array                  # Guardo el array para su posterior uso en otros métodos.
-        self.SetItemCount(len(self.array))  # SetitemCount llamará a OnGetItemText las interaciones necesarias.
-    
-    def OnGetItemText(self, item, col):       # Sobreescritura del método virtual original (polimorfismo).
-        return "%s" % (self.array[item][col]) # %s convierte a string como en el scanf de C.
+from listviewVirtual import ListViewVirtual
+from menuContextual import MenuContextual
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
@@ -101,10 +79,11 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
         self.Bind(wx.EVT_LIST_COL_CLICK, self.OnOrdenar, id=self.lvPalabras.GetId())
+        self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self.OnMenuContextual, id=self.lvPalabras.GetId())        
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
-        
+                
         self.Centre()
         self.Show(True)
 
@@ -170,6 +149,9 @@ class FramePrincipal(wx.Frame):
     def OnCancelarFiltrar(self,event):
         self.scFiltrar.Clear()
         self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
+
+    def OnMenuContextual(self,event):
+        self.PopupMenu(MenuContextual(self), event.GetPosition())
 
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
