@@ -7,9 +7,6 @@ from database import BaseDeDatos
 from dialogoNuevaPalabra import DialogoNuevaPalabra
 
 class ListViewVirtual(wx.ListCtrl):
-    articulos = { 0 : "der" , 1 : "das" , 2 : "die", None : ""}
-    tipos = { 0 : "sustantivo" , 1 : "verbo" , 2 : "adjetivo", 3 : "Otro"}
-    
     def __init__(self, parent, pos, size,array):
         wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_VRULES|wx.LC_HRULES)
 
@@ -21,19 +18,17 @@ class ListViewVirtual(wx.ListCtrl):
         self.InsertColumn(5,"Tipo")        
         self.InsertColumn(6,"Tema")
         self.InsertColumn(7,"Notas")
-        self.SetColumnWidth(0,30)#wx.LIST_AUTOSIZE)
+        self.SetColumnWidth(0,30)
         for i in range(1,8): self.SetColumnWidth(i,65)#wx.LIST_AUTOSIZE)        
         
         self.OnRellenar(array)
     
     def OnRellenar(self, array):
-        self.array = array
-        self.SetItemCount(len(self.array))
+        self.array = array                  # Guardo el array para su posterior uso en otros métodos.
+        self.SetItemCount(len(self.array))  # SetitemCount llamará a OnGetItemText las interaciones necesarias.
     
-    def OnGetItemText(self, item, col):
-        if col == 2: return self.articulos[self.array[item][col]]
-        if col == 5: return self.tipos[self.array[item][col]]
-        else:        return "%s" % (self.array[item][col])
+    def OnGetItemText(self, item, col):       # Sobreescritura del método virtual original (polimorfismo).
+        return "%s" % (self.array[item][col]) # %s convierte a string como en el scanf de C.
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
@@ -118,10 +113,10 @@ class FramePrincipal(wx.Frame):
         nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
         if nuevaPalabra.ShowModal() == 1:
             datos = nuevaPalabra.GetDatos()      
-        
-            #Warning: Actualmente se asigna indice con el GetCount del litbox. El sistema debe mejorarse si en el futuro.            
-            self.deutschDB.introducir(str(self.lvPalabras.GetItemCount()),datos["palabra"],datos["genero"],datos["plural"],datos["traduccion"],datos["tipo"],
-                                          datos ["tema"],datos["notas"])
+            nuevo_indice = self.deutschDB.getUltimoIndice() + 1
+                   
+            self.deutschDB.introducir(str(nuevo_indice),datos["palabra"],datos["genero"],datos["plural"],
+                                      datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
             self.deutschDB.commit()
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
             self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
