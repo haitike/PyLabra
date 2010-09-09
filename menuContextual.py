@@ -19,5 +19,8 @@ class MenuContextual(wx.Menu):
         print "editando palabra"
 
     def OnBorrarPalabra(self, event):
-        print "borrando palabra"
-        self.parent.deutschDB.borrar(str(self.parent.lvPalabras.GetFocusedItem()+1))
+        itemid = self.parent.lvPalabras.GetFocusedItem()       #Cojo el indice de la fila que selcciono
+        if itemid != -1: # Si es -1, significa que no se seleciiono nada
+            item = self.parent.lvPalabras.GetItem(itemid)          # Guardo los datos de esa fila en item
+            self.parent.deutschDB.borrar(str(item.GetText()))      # Borro esa fila por la clave No
+        print itemid
