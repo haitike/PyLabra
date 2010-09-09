@@ -23,4 +23,4 @@ class MenuContextual(wx.Menu):
         if itemid != -1: # Si es -1, significa que no se seleciiono nada
             item = self.parent.lvPalabras.GetItem(itemid)          # Guardo los datos de esa fila en item
             self.parent.deutschDB.borrar(str(item.GetText()))      # Borro esa fila por la clave No
-        print itemid
+            self.parent.commiter()

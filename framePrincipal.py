@@ -158,7 +158,7 @@ class FramePrincipal(wx.Frame):
         listbox.Clear() 
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
             listbox.Append(str(linea[0]) + " - " + linea[7])
-    def commiter():
+    def commiter(self):
         self.deutschDB.commit()
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
         self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
