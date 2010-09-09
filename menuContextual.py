@@ -5,7 +5,7 @@ class MenuContextual(wx.Menu):
         wx.Menu.__init__(self)
 
         self.parent = parent
-
+        
         editarPalabra = wx.MenuItem(self, wx.NewId(), 'Editar Palabra')
         self.AppendItem(editarPalabra)
         self.Bind(wx.EVT_MENU, self.OnEditarPalabra, id=editarPalabra.GetId())
@@ -13,10 +13,11 @@ class MenuContextual(wx.Menu):
         borrarPalabra = wx.MenuItem(self, wx.NewId(), 'Borrar Palabra')
         self.AppendItem(borrarPalabra)
         self.Bind(wx.EVT_MENU, self.OnBorrarPalabra, id=borrarPalabra.GetId())
-
-
+        
+        
     def OnEditarPalabra(self, event):
         print "editando palabra"
 
     def OnBorrarPalabra(self, event):
         print "borrando palabra"
+        self.parent.deutschDB.borrar(str(self.parent.lvPalabras.GetFocusedItem()+1))

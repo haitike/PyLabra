@@ -153,7 +153,10 @@ class FramePrincipal(wx.Frame):
 
     def OnMenuContextual(self,event):
         self.PopupMenu(MenuContextual(self), event.GetPosition())
-
+        self.deutschDB.commit()
+        self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
+    
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.

@@ -36,7 +36,7 @@ class BaseDeDatos:
 
     def borrar(self, indice):
         try:
-            self.cursor.execute("delete from palabras WHERE indice = "+indice+";")
+            self.cursor.execute("delete from palabras WHERE No = "+indice+";")
         except lite.Error, error:
             print "Error: " + str(error)
 
