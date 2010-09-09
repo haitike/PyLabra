@@ -92,7 +92,8 @@ class FramePrincipal(wx.Frame):
         nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
         if nuevaPalabra.ShowModal() == 1:
             datos = nuevaPalabra.GetDatos()      
-            nuevo_indice = self.deutschDB.getUltimoIndice() + 1
+            try: nuevo_indice = self.deutschDB.getUltimoIndice() + 1
+            except: nuevo_indice = 1
                    
             self.deutschDB.introducir(str(nuevo_indice),datos["palabra"],datos["genero"],datos["plural"],
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
