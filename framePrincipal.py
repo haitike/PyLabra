@@ -88,7 +88,7 @@ class FramePrincipal(wx.Frame):
         self.Show(True)
 
     # METODOS
-    def OnNuevaPalabra(self,event):      
+    def OnNuevaPalabra(self,event):
         nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
         if nuevaPalabra.ShowModal() == 1:
             datos = nuevaPalabra.GetDatos()      
