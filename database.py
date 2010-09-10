@@ -34,6 +34,13 @@ class BaseDeDatos:
         except lite.Error, error:
             print "Error: " + str(error)
 
+    def extraer2(self, criterio):
+        try:
+            self.cursor.execute("select * from palabras where No="+criterio+";")
+            return self.cursor.fetchall()
+        except lite.Error, error:
+            print "Error: " + str(error)
+
     def borrar(self, indice):
         try:
             self.cursor.execute("delete from palabras WHERE No = "+indice+";")

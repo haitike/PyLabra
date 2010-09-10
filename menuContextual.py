@@ -16,9 +16,13 @@ class MenuContextual(wx.Menu):
         
         
     def OnEditarPalabra(self, event):
-        print "editando palabra"
+        print "Editando palabra"
+        itemid = self.parent.lvPalabras.GetFocusedItem()
+        item = self.parent.lvPalabras.GetItem(itemid) # si en esta funcion pongo GetItem(itemid, n) Donde n es un entero, Seleccionare el contenido de la columna indicada en n
+        self.parent.editarPalabra(item)
 
     def OnBorrarPalabra(self, event):
+        print "Borrando palabra"
         itemid = self.parent.lvPalabras.GetFocusedItem()       #Cojo el indice de la fila que selcciono
         if itemid != -1: # Si es -1, significa que no se seleciiono nada
             item = self.parent.lvPalabras.GetItem(itemid)          # Guardo los datos de esa fila en item

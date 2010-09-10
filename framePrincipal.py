@@ -33,7 +33,7 @@ class FramePrincipal(wx.Frame):
         barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap('./icons/mostrarNavegador.png'), shortHelp="Muestra/Oculta el navegador")
         barra_herramientas.AddSeparator()
         barra_herramientas.AddLabelTool(4, '', wx.Bitmap('./icons/salir.png'), shortHelp="Salir")
-    	barra_herramientas.Realize()
+        barra_herramientas.Realize()
 
         # Barra de Busqueda del Navegador Web.
         buscadorWeb = wx.Panel(self.panel2, -1, size=(-1, 20))
@@ -101,6 +101,19 @@ class FramePrincipal(wx.Frame):
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
             self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
         nuevaPalabra.Destroy()
+    
+    def editarPalabra(self, palabra):
+        editarPalabra = DialogoNuevaPalabra(None, -1, 'Editar Palabra')
+        editarPalabra.Show() # Pongo esto porque no se muestra al crearla, aunque tambian podria ponerla en el __init__ de DialogoNuevaPalabra
+        
+        seleccion = self.deutschDB.extraer2(palabra.GetText())
+        
+        #if seleccion[0][2] == "der": editarPalabra.rbTipo.Enable(2)
+        editarPalabra.stPalabra.AppendText(seleccion[0][1])
+        editarPalabra.stPlural.AppendText(seleccion[0][3])
+        editarPalabra.stTraduccion.AppendText(seleccion[0][4])
+        editarPalabra.stNotas.AppendText(seleccion[0][7])
+        print seleccion
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
