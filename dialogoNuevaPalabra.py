@@ -66,6 +66,8 @@ class DialogoNuevaPalabra(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.OnGuardarSalir, id=self.bGuardarSalir.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnSalir, id=self.bSalir.GetId())
         self.Bind(wx.EVT_RADIOBOX, self.OnCambiarTipo, id=self.rbTipo.GetId())
+        
+        self.Show()
 
     def OnCambiarTipo(self,event):
         if self.rbTipo.GetSelection() == 0: # Si es Sustantivo
@@ -101,6 +103,6 @@ class DialogoNuevaPalabra(wx.Dialog):
     def OnSalir(self,event):
         self.Destroy()
 
-    def GetDatos(self):
-        return self.datos
+    #def GetDatos(self):
+    #    return self.datos
 

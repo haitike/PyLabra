@@ -67,7 +67,3 @@ class BaseDeDatos:
     
     def estaConectado(self):
         return self.conectado
-
-    def getUltimoIndice(self):
-        return self.extraer()[-1][0]    # -1 Significa Ultima linea
-        

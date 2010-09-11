@@ -16,6 +16,7 @@ class FramePrincipal(wx.Frame):
     orden = "ASC"
 
     # MAIN
+    """Incicializador de framePrincipal"""
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title,size=(1024,768))
 
@@ -59,13 +60,13 @@ class FramePrincipal(wx.Frame):
         self.scFiltrar.ShowCancelButton(True)
 
         # ListView (Panel 1)        
-        self.lvPalabras = ListViewVirtual(self.panel,(5,50),(500,400),self.deutschDB.extraer(self.criterio,self.orden))
+        self.lvPalabras = ListViewVirtual(self.panel,(5,50),(500,400),self.deutschDB.extraer())
 
         # ListBox (Panel 1)
         self.lbNota = wx.ListBox(self.panel, -1,(5,460),(500,360),"", wx.LB_SINGLE)
 
         # Rellenados Automáticos
-        self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))        
+        self.rellenarListBox(self.lbNota, self.deutschDB.extraer())        
 
         # La ventana comienza sin dividir.
         self.separador.SplitVertically(self.panel, self.panel2)
@@ -85,42 +86,40 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
                 
         self.Centre()
-        self.Show(True)
+        self.Show()
 
     # METODOS
     def OnNuevaPalabra(self,event):
         nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
         if nuevaPalabra.ShowModal() == 1:
-            datos = nuevaPalabra.GetDatos()      
-            try: nuevo_indice = self.deutschDB.getUltimoIndice() + 1
+            datos = nuevaPalabra.datos      
+            try: nuevo_indice = self.deutschDB.extraer()[-1][0] + 1
             except: nuevo_indice = 1
                    
             self.deutschDB.introducir(str(nuevo_indice),datos["palabra"],datos["genero"],datos["plural"],
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
             self.deutschDB.commit()
-            self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
-            self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
+            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
+            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
         nuevaPalabra.Destroy()
     
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(None, -1, 'Editar Palabra')
-        editarPalabra.Show() # Pongo esto porque no se muestra al crearla, aunque tambian podria ponerla en el __init__ de DialogoNuevaPalabra
-        
+               
         seleccion = self.deutschDB.extraer2(palabra.GetText())
         
         #if seleccion[0][2] == "der": editarPalabra.rbTipo.Enable(2)
         editarPalabra.stPalabra.AppendText(seleccion[0][1])
         editarPalabra.stPlural.AppendText(seleccion[0][3])
         editarPalabra.stTraduccion.AppendText(seleccion[0][4])
-        editarPalabra.stNotas.AppendText(seleccion[0][7])
-        print seleccion
+        editarPalabra.stNotas.AppendText(seleccion[0][7]
 
     def OnBorrarTodo(self,event):
             self.deutschDB.borrarTodo()
             self.deutschDB.commit()
-            self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
-            self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
-
+            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
+            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+    
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
 
@@ -148,7 +147,7 @@ class FramePrincipal(wx.Frame):
         self.lvPalabras.OnRellenar(array_ordenado)    # Relleno el listview con el array ordenado
 
     def OnFiltrar(self,event):
-        array_ordenado = self.deutschDB.extraer(self.criterio,self.orden)
+        array_ordenado = self.deutschDB.extraer()
         array_filtrado = []
         for linea in array_ordenado:
             coincidencia = False
@@ -162,7 +161,7 @@ class FramePrincipal(wx.Frame):
         
     def OnCancelarFiltrar(self,event):
         self.scFiltrar.Clear()
-        self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
 
     def OnMenuContextual(self,event):
         self.PopupMenu(MenuContextual(self), event.GetPosition())
@@ -173,5 +172,5 @@ class FramePrincipal(wx.Frame):
             listbox.Append(str(linea[0]) + " - " + linea[7])
     def commiter(self):
         self.deutschDB.commit()
-        self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
-        self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
+        self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
