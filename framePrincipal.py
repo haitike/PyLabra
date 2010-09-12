@@ -90,7 +90,7 @@ class FramePrincipal(wx.Frame):
 
     # METODOS
     def OnNuevaPalabra(self,event):
-        nuevaPalabra = DialogoNuevaPalabra(None, -1, 'Introducir Nueva Palabra')
+        nuevaPalabra = DialogoNuevaPalabra(self, -1, 'Introducir Nueva Palabra')
         if nuevaPalabra.ShowModal() == 1:
             datos = nuevaPalabra.datos      
             try: nuevo_indice = self.deutschDB.extraer()[-1][0] + 1
@@ -102,29 +102,33 @@ class FramePrincipal(wx.Frame):
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
             self.lvPalabras.OnRellenar(self.deutschDB.extraer())
         nuevaPalabra.Destroy()
-    
     def editarPalabra(self, palabra):
-        editarPalabra = DialogoNuevaPalabra(None, -1, 'Editar Palabra')
-               
+        editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
+        
         seleccion = self.deutschDB.extraer2(palabra.GetText())
         
-        #if seleccion[0][2] == "der": editarPalabra.rbTipo.Enable(2)
+        #if seleccion[0][5] == "sust": 
+        #    editarPalabra.rbTipo.EnableItem(2)
+        #else:
+        #    editarPalabra.rbTipo.EnableItem(1)
+        
         editarPalabra.stPalabra.AppendText(seleccion[0][1])
         editarPalabra.stPlural.AppendText(seleccion[0][3])
         editarPalabra.stTraduccion.AppendText(seleccion[0][4])
-        editarPalabra.stNotas.AppendText(seleccion[0][7]
+        editarPalabra.stNotas.AppendText(seleccion[0][7])
+        print seleccion
 
-    def OnBorrarTodo(self,event):
-            self.deutschDB.borrarTodo()
-            self.deutschDB.commit()
-            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
-    
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
+        
+    def OnBorrarTodo(self, event):
+        self.deutschDB.borrarTodo()
+        self.deutschDB.commit()
+        self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
 
     def OnQuitarBrowser(self,event):
-        if self.separador.IsSplit():        
+        if self.separador.IsSplit():
             self.separador.Unsplit()
         else:
             self.separador.SplitVertically(self.panel, self.panel2)
@@ -158,7 +162,8 @@ class FramePrincipal(wx.Frame):
                 array_filtrado.append(linea)
 
         self.lvPalabras.OnRellenar(array_filtrado)
-        
+        self.rellenarListBox(self.lbNota, array_filtrado)
+
     def OnCancelarFiltrar(self,event):
         self.scFiltrar.Clear()
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())
