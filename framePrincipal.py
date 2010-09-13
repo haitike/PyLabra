@@ -98,7 +98,7 @@ class FramePrincipal(wx.Frame):
                    
             self.deutschDB.introducir(str(nuevo_indice),datos["palabra"],datos["genero"],datos["plural"],
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
-            self.deutschDB.commit()
+            self.connection.commit() 
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
             self.lvPalabras.OnRellenar(self.deutschDB.extraer())
         nuevaPalabra.Destroy()
@@ -123,7 +123,7 @@ class FramePrincipal(wx.Frame):
         
     def OnBorrarTodo(self, event):
         self.deutschDB.borrarTodo()
-        self.deutschDB.commit()
+        self.connection.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())
 
@@ -176,6 +176,6 @@ class FramePrincipal(wx.Frame):
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
             listbox.Append(str(linea[0]) + " - " + linea[7])
     def commiter(self):
-        self.deutschDB.commit()
+        self.connection.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())

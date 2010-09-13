@@ -57,13 +57,7 @@ class BaseDeDatos:
         except lite.Error, error:
             print "Error: " + str(error)
 
-    def commit(self):    
-        self.connection.commit() 
-   
     def cerrar(self):
         self.cursor.close()
         self.connection.close()
         self.conectado = False
-    
-    def estaConectado(self):
-        return self.conectado
