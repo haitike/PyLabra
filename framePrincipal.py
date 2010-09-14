@@ -115,7 +115,7 @@ class FramePrincipal(wx.Frame):
             editarPalabra.stPlural.AppendText(seleccion[0][3])
             genero = seleccion[0][2]
             if genero == 'der': editarPalabra.rbGenero.SetSelection(0)
-            if genero == 'das': editarPalabra.rbGenero.SetSelection(1)
+            elif genero == 'das': editarPalabra.rbGenero.SetSelection(1)
             else: editarPalabra.rbGenero.SetSelection(2)
         else:
             editarPalabra.stPlural.Enable(False)
