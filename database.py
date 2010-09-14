@@ -61,5 +61,3 @@ class BaseDeDatos:
         self.cursor.close()
         self.connection.close()
         self.conectado = False
-    def commit(self):    
-        self.connection.commit() 
