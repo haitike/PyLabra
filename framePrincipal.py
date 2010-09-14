@@ -98,7 +98,7 @@ class FramePrincipal(wx.Frame):
                    
             self.deutschDB.introducir(str(nuevo_indice),datos["palabra"],datos["genero"],datos["plural"],
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
-            self.connection.commit() 
+            self.deutschDB.commit() 
             self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
             self.lvPalabras.OnRellenar(self.deutschDB.extraer())
         nuevaPalabra.Destroy()
@@ -106,16 +106,25 @@ class FramePrincipal(wx.Frame):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
         
         seleccion = self.deutschDB.extraer2(palabra.GetText())
-        
-        #if seleccion[0][5] == "sust": 
-        #    editarPalabra.rbTipo.EnableItem(2)
-        #else:
-        #    editarPalabra.rbTipo.EnableItem(1)
-        
+
         editarPalabra.stPalabra.AppendText(seleccion[0][1])
-        editarPalabra.stPlural.AppendText(seleccion[0][3])
         editarPalabra.stTraduccion.AppendText(seleccion[0][4])
         editarPalabra.stNotas.AppendText(seleccion[0][7])
+        if seleccion[0][2]: # Es sustantivo
+            editarPalabra.rbTipo.SetSelection(0)
+            editarPalabra.stPlural.AppendText(seleccion[0][3])
+            genero = seleccion[0][2]
+            if genero == 'der': editarPalabra.rbGenero.SetSelection(0)
+            if genero == 'das': editarPalabra.rbGenero.SetSelection(1)
+            else: editarPalabra.rbGenero.SetSelection(2)
+        else:
+            editarPalabra.stPlural.Enable(False)
+            editarPalabra.rbGenero.Enable(False)
+            
+            tipo = seleccion[0][5]
+            if tipo == 'verbo': editarPalabra.rbTipo.SetSelection(1)
+            elif tipo == 'adj.': editarPalabra.rbTipo.SetSelection(2)
+            else: editarPalabra.rbTipo.SetSelection(3)
         print seleccion
 
     def OnBuscarWeb(self,event):
@@ -176,6 +185,6 @@ class FramePrincipal(wx.Frame):
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
             listbox.Append(str(linea[0]) + " - " + linea[7])
     def commiter(self):
-        self.connection.commit() 
+        self.deutschDB.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())

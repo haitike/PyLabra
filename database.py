@@ -39,7 +39,7 @@ class BaseDeDatos:
 
     def extraer2(self, criterio):
         try:
-            self.cursor.execute("select * from palabras where No=?", (criterio)) #Intruccion parametrizada qmark style
+            self.cursor.execute("select * from palabras where No='%s'" % criterio )
             return self.cursor.fetchall()
         except lite.Error, error:
             print "Error: " + str(error)
@@ -61,3 +61,5 @@ class BaseDeDatos:
         self.cursor.close()
         self.connection.close()
         self.conectado = False
+    def commit(self):    
+        self.connection.commit() 
