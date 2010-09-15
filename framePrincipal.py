@@ -110,7 +110,7 @@ class FramePrincipal(wx.Frame):
         editarPalabra.stTraduccion.AppendText(seleccion[0][4])
         editarPalabra.stNotas.AppendText(seleccion[0][7])
         
-        self.buscarNivel(seleccion[0][6], editarPalabra.temas.items())
+        nivel = self.obtener_nivel(str(seleccion[0][6]), editarPalabra.temas)
         
         if seleccion[0][2]: # Es sustantivo
             editarPalabra.rbTipo.SetSelection(0)
@@ -194,7 +194,7 @@ class FramePrincipal(wx.Frame):
         self.deutschDB.connection.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())
-    def buscarNivel(self, tema, lista):
-        indiceSegundo = (0,1)
-       #for i in range(11):
-        #    if 
+        
+    def obtener_nivel(self, tema, dict):
+        for n, ts in dict.iteritems(): # iterItem asigna a n, la clave del dict, y a ts, el valor
+            if tema in ts: return n
