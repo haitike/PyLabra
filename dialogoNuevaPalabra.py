@@ -104,5 +104,5 @@ class DialogoNuevaPalabra(wx.Dialog):
         self.Destroy()
 
     #def GetDatos(self):
-    #    return self.datos
+        return self.datos
 
