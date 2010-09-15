@@ -16,8 +16,8 @@ class FramePrincipal(wx.Frame):
     orden = "ASC"
 
     # MAIN
-    """Incicializador de framePrincipal"""
     def __init__(self, parent, id, title):
+        """Incicializador de framePrincipal"""
         wx.Frame.__init__(self, parent, id, title,size=(1024,768))
 
         # Creo los dos paneles, un sizer y un separador
@@ -84,6 +84,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
+        #self.Bind(wx.EVT_MENU, self.editarPalabra, id=self.MenuContextual.)
                 
         self.Centre()
         self.Show()
@@ -98,18 +99,19 @@ class FramePrincipal(wx.Frame):
                    
             self.deutschDB.introducir(str(nuevo_indice),datos["palabra"],datos["genero"],datos["plural"],
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
-            self.deutschDB.connection.commit()
-            self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-            self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+            self.commiter()
         nuevaPalabra.Destroy()
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
-        
+
         seleccion = self.deutschDB.extraer2(palabra.GetText())
 
         editarPalabra.stPalabra.AppendText(seleccion[0][1])
         editarPalabra.stTraduccion.AppendText(seleccion[0][4])
         editarPalabra.stNotas.AppendText(seleccion[0][7])
+        
+        self.buscarNivel(seleccion[0][6], editarPalabra.temas.items())
+        
         if seleccion[0][2]: # Es sustantivo
             editarPalabra.rbTipo.SetSelection(0)
             editarPalabra.stPlural.AppendText(seleccion[0][3])
@@ -126,6 +128,10 @@ class FramePrincipal(wx.Frame):
             elif tipo == 'adj.': editarPalabra.rbTipo.SetSelection(2)
             else: editarPalabra.rbTipo.SetSelection(3)
         print seleccion
+
+        #self.deutschDB.editar(datos["palabra"],datos["genero"],datos["plural"],
+                                      #datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"], str(seleccion[0][0]))
+        #self.commiter()
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
@@ -188,3 +194,7 @@ class FramePrincipal(wx.Frame):
         self.deutschDB.connection.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+    def buscarNivel(self, tema, lista):
+        indiceSegundo = (0,1)
+       #for i in range(11):
+        #    if 

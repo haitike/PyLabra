@@ -28,6 +28,13 @@ class BaseDeDatos:
                 (indice, palabra, genero, plural, traduccion, tipo, tema, notas))     #Intruccion parametrizada qmark style   
         except lite.Error, error:
             print "Error: " + str(error)
+    
+    def editar(self,indice,palabra,genero,plural,traduccion,tipo,tema,notas):
+        try:
+            self.cursor.execute("update palabras set palabra=?, genero=?, plural=?, traduccion=?, tipo=?, tema=?, notas=? where No=?",
+                (palabra, genero, plural, traduccion, tipo, tema, notas, indice))     #Intruccion parametrizada qmark style   
+        except lite.Error, error:
+            print "Error: " + str(error)
 
     def extraer(self,criterio="No", orden="ASC"):
         try:
