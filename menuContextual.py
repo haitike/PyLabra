@@ -20,12 +20,6 @@ class MenuContextual(wx.Menu):
         itemid = self.parent.lvPalabras.GetFocusedItem()
         item = self.parent.lvPalabras.GetItem(itemid) # si en esta funcion pongo GetItem(itemid, n) Donde n es un entero, Seleccionare el contenido de la columna indicada en n
         self.parent.editarPalabra(item)
-        
-        #self.datos_ = self.dialogoNuevaPalabra.DialogoNuevaPalabra.datos
-        
-        #self.parent.deutschDB.editar(self.datos["palabra"],self.datos["genero"],self.datos["plural"],
-        #                              self.datos["traduccion"],self.datos["tipo"],self.datos ["tema"],self.datos["notas"], self.parent.lvPalabras.GetItem(itemid))
-        #self.commiter()
 
     def OnBorrarPalabra(self, event):
         print "Borrando palabra"

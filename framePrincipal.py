@@ -103,7 +103,7 @@ class FramePrincipal(wx.Frame):
         nuevaPalabra.Destroy()
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
-
+        
         seleccion = self.deutschDB.extraer2(palabra.GetText())
 
         editarPalabra.stPalabra.AppendText(seleccion[0][1])
@@ -128,10 +128,11 @@ class FramePrincipal(wx.Frame):
             elif tipo == 'adj.': editarPalabra.rbTipo.SetSelection(2)
             else: editarPalabra.rbTipo.SetSelection(3)
         print seleccion
-
-        #self.deutschDB.editar(datos["palabra"],datos["genero"],datos["plural"],
-                                      #datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"], str(seleccion[0][0]))
-        #self.commiter()
+        if editarPalabra.ShowModal() == 1:
+            datos = editarPalabra.datos
+            self.deutschDB.editar(datos["palabra"],datos["genero"],datos["plural"],
+                                      datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"], str(seleccion[0][0]))
+            self.commiter()
 
     def OnBuscarWeb(self,event):
         self.browser.LoadPage("http://www.wordreference.com/deen/"+self.tcPalabraBuscarWeb.GetValue())
