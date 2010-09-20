@@ -47,7 +47,7 @@ class BaseDeDatos:
     def extraerLinea(self, criterio):
         try:
             self.cursor.execute("select * from palabras where No='%s'" % criterio )
-            return self.cursor.fetchall()
+            return self.cursor.fetchall()[0]
         except lite.Error, error:
             print "Error: " + str(error)
             return

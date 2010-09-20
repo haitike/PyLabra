@@ -107,11 +107,11 @@ class FramePrincipal(wx.Frame):
         
         seleccion = self.deutschDB.extraerLinea(palabra.GetText())
 
-        editarPalabra.stPalabra.AppendText(seleccion[0][1])
-        editarPalabra.stTraduccion.AppendText(seleccion[0][4])
-        editarPalabra.stNotas.AppendText(seleccion[0][7])
+        editarPalabra.stPalabra.AppendText(seleccion[1])
+        editarPalabra.stTraduccion.AppendText(seleccion[4])
+        editarPalabra.stNotas.AppendText(seleccion[7])
         
-        nivel = self.obtener_nivel(str(seleccion[0][6]), editarPalabra.temas)
+        nivel = self.obtener_nivel(str(seleccion[6]), editarPalabra.temas)
         #for valor in range(editarPalabra.niveles.__len__()):
          #   if nivel==editarPalabra.niveles[valor]:
           #      editarPalabra.cbNivel.SetSelection(valor)
@@ -124,10 +124,10 @@ class FramePrincipal(wx.Frame):
                  #               editarPalabra.cbTema.SetSelection(ind)
                   #          else: j-=1
                 
-        if seleccion[0][2]: # Es sustantivo
+        if seleccion[2]: # Es sustantivo
             editarPalabra.rbTipo.SetSelection(0)
-            editarPalabra.stPlural.AppendText(seleccion[0][3])
-            genero = seleccion[0][2]
+            editarPalabra.stPlural.AppendText(seleccion[3])
+            genero = seleccion[2]
             if genero == 'der': editarPalabra.rbGenero.SetSelection(0)
             elif genero == 'das': editarPalabra.rbGenero.SetSelection(1)
             else: editarPalabra.rbGenero.SetSelection(2)
@@ -135,7 +135,7 @@ class FramePrincipal(wx.Frame):
             editarPalabra.stPlural.Enable(False)
             editarPalabra.rbGenero.Enable(False)
             
-            tipo = seleccion[0][5]
+            tipo = seleccion[5]
             if tipo == 'verbo': editarPalabra.rbTipo.SetSelection(1)
             elif tipo == 'adj.': editarPalabra.rbTipo.SetSelection(2)
             else: editarPalabra.rbTipo.SetSelection(3)
