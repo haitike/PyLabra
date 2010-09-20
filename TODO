@@ -1,1 +1,3 @@
 - Rellenar por completo DialogoNuevaPalabra al editar la palabra con los datos correspondientes, y que realize los cambios a la db
+- Centrar el menu contextual.
+- Mantener el filtro tras añadir palabras, borrar, editar, etc.

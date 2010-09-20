@@ -38,13 +38,14 @@ class BaseDeDatos:
 
     def extraer(self,criterio="No", orden="ASC"):
         try:
-            self.cursor.execute("select * from palabras ORDER BY "+criterio+" "+orden+";")
+            self.cursor.execute("select * from palabras ORDER BY %s %s;" % (criterio, orden))
+            #self.cursor.execute("select * from palabras ORDER BY "+criterio+" "+orden+";")
             return self.cursor.fetchall()
         except lite.Error, error:
             print "Error: " + str(error)
             return
 
-    def extraer2(self, criterio):
+    def extraerLinea(self, criterio):
         try:
             self.cursor.execute("select * from palabras where No='%s'" % criterio )
             return self.cursor.fetchall()
@@ -68,3 +69,6 @@ class BaseDeDatos:
         self.cursor.close()
         self.connection.close()
         self.conectado = False
+
+    def commit(self):
+        self.connection.commit()

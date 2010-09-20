@@ -105,7 +105,7 @@ class FramePrincipal(wx.Frame):
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
         
-        seleccion = self.deutschDB.extraer2(palabra.GetText())
+        seleccion = self.deutschDB.extraerLinea(palabra.GetText())
 
         editarPalabra.stPalabra.AppendText(seleccion[0][1])
         editarPalabra.stTraduccion.AppendText(seleccion[0][4])
@@ -204,7 +204,7 @@ class FramePrincipal(wx.Frame):
         for linea in array: # Recorro linea a linea el array bidimencional con la variable linea.
             listbox.Append(str(linea[0]) + " - " + linea[7])
     def commiter(self):
-        self.deutschDB.connection.commit() 
+        self.deutschDB.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
         self.lvPalabras.OnRellenar(self.deutschDB.extraer())
         
