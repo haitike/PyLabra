@@ -104,7 +104,6 @@ class FramePrincipal(wx.Frame):
 
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
-        
         seleccion = self.deutschDB.extraerLinea(palabra.GetText())
 
         editarPalabra.stPalabra.AppendText(seleccion[1])
@@ -112,38 +111,23 @@ class FramePrincipal(wx.Frame):
         editarPalabra.stNotas.AppendText(seleccion[7])
         
         nivel = self.obtener_nivel(str(seleccion[6]), editarPalabra.temas)
-        #for valor in range(editarPalabra.niveles.__len__()):
-         #   if nivel==editarPalabra.niveles[valor]:
-          #      editarPalabra.cbNivel.SetSelection(valor)
-           #     j=editarPalabra.temas[editarPalabra.niveles[valor]].__len__() - 1
-            #    for i in range(editarPalabra.temas[editarPalabra.niveles[valor]].__len__()):
-             #       print editarPalabra.temas[editarPalabra.niveles[i]][j]
-              #      if seleccion[0][6] in editarPalabra.temas[editarPalabra.niveles[i]]:
-               #         for ind in range(editarPalabra.temas[editarPalabra.niveles[i]].__len__()):
-                #            if seleccion[0][6] == editarPalabra.temas[editarPalabra.niveles[i]][j]:
-                 #               editarPalabra.cbTema.SetSelection(ind)
-                  #          else: j-=1
+        editarPalabra.cbNivel.SetValue(nivel)
+        editarPalabra.OnCambiarNivel()
+        editarPalabra.cbTema.SetValue(str(seleccion[6]))
                 
         if seleccion[2]: # Es sustantivo
             editarPalabra.rbTipo.SetSelection(0)
             editarPalabra.stPlural.AppendText(seleccion[3])
-            genero = seleccion[2]
-            if genero == 'der': editarPalabra.rbGenero.SetSelection(0)
-            elif genero == 'das': editarPalabra.rbGenero.SetSelection(1)
-            else: editarPalabra.rbGenero.SetSelection(2)
+            editarPalabra.rbGenero.SetStringSelection(seleccion[2])
         else:
             editarPalabra.stPlural.Enable(False)
             editarPalabra.rbGenero.Enable(False)
-            
-            tipo = seleccion[5]
-            if tipo == 'verbo': editarPalabra.rbTipo.SetSelection(1)
-            elif tipo == 'adj.': editarPalabra.rbTipo.SetSelection(2)
-            else: editarPalabra.rbTipo.SetSelection(3)
-        print seleccion
+            editarPalabra.rbTipo.SetStringSelection(seleccion[5])
+        
         if editarPalabra.ShowModal() == 1:
             datos = editarPalabra.datos
             self.deutschDB.editar(datos["palabra"],datos["genero"],datos["plural"],
-                                      datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"], str(seleccion[0][0]))
+                                      datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"], str(seleccion[0]))
             self.commiter()
 
     def OnBuscarWeb(self,event):

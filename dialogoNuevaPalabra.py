@@ -75,9 +75,9 @@ class DialogoNuevaPalabra(wx.Dialog):
             self.stPlural.Enable(False)
             self.rbGenero.Enable(False)     # Si es Adjetivo, Verbo o Adverbio
 
-    def OnCambiarNivel(self,event):
+    def OnCambiarNivel(self,event=None):
         self.cbTema.Clear()
-        for valor in self.temas[self.niveles[self.cbNivel.GetSelection()]]:
+        for valor in self.temas[self.cbNivel.GetValue()]:
             self.cbTema.Append(valor)
         self.cbTema.SetSelection(0)
    
@@ -96,7 +96,7 @@ class DialogoNuevaPalabra(wx.Dialog):
             self.datos["genero"] = ""
 
         self.Destroy()
-        self.SetReturnCode(1)   
+        self.SetReturnCode(1) # Hacemos que al llamarlo con ShowModal devuelva el integer 1.   
 
     def OnSalir(self,event):
         self.Destroy()
