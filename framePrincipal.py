@@ -84,7 +84,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
-        #self.Bind(wx.EVT_MENU, self.editarPalabra, id=self.MenuContextual.)
+        #self.Bind(wx.EVT_MENU, self.editarPalabra, id=MenuContextual.editarPalabra.GetId())
                 
         self.Centre()
         self.Show()
@@ -101,6 +101,7 @@ class FramePrincipal(wx.Frame):
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
             self.commiter()
         nuevaPalabra.Destroy()
+
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
         
@@ -111,7 +112,18 @@ class FramePrincipal(wx.Frame):
         editarPalabra.stNotas.AppendText(seleccion[0][7])
         
         nivel = self.obtener_nivel(str(seleccion[0][6]), editarPalabra.temas)
-        
+        #for valor in range(editarPalabra.niveles.__len__()):
+         #   if nivel==editarPalabra.niveles[valor]:
+          #      editarPalabra.cbNivel.SetSelection(valor)
+           #     j=editarPalabra.temas[editarPalabra.niveles[valor]].__len__() - 1
+            #    for i in range(editarPalabra.temas[editarPalabra.niveles[valor]].__len__()):
+             #       print editarPalabra.temas[editarPalabra.niveles[i]][j]
+              #      if seleccion[0][6] in editarPalabra.temas[editarPalabra.niveles[i]]:
+               #         for ind in range(editarPalabra.temas[editarPalabra.niveles[i]].__len__()):
+                #            if seleccion[0][6] == editarPalabra.temas[editarPalabra.niveles[i]][j]:
+                 #               editarPalabra.cbTema.SetSelection(ind)
+                  #          else: j-=1
+                
         if seleccion[0][2]: # Es sustantivo
             editarPalabra.rbTipo.SetSelection(0)
             editarPalabra.stPlural.AppendText(seleccion[0][3])
@@ -198,4 +210,5 @@ class FramePrincipal(wx.Frame):
         
     def obtener_nivel(self, tema, dict):
         for n, ts in dict.iteritems(): # iterItem asigna a n, la clave del dict, y a ts, el valor
-            if tema in ts: return n
+            if tema in ts: 
+                return n
