@@ -151,9 +151,7 @@ class FramePrincipal(wx.Frame):
         
     def OnBorrarTodo(self, event):
         self.deutschDB.borrarTodo()
-        self.connection.commit() 
-        self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+        self.commiter()
 
     def OnQuitarBrowser(self,event):
         if self.separador.IsSplit():
@@ -179,7 +177,7 @@ class FramePrincipal(wx.Frame):
         self.lvPalabras.OnRellenar(array_ordenado)    # Relleno el listview con el array ordenado
 
     def OnFiltrar(self,event):
-        array_ordenado = self.deutschDB.extraer()
+        array_ordenado = self.deutschDB.extraer(self.criterio,self.orden)
         array_filtrado = []
         for linea in array_ordenado:
             coincidencia = False
@@ -194,7 +192,7 @@ class FramePrincipal(wx.Frame):
 
     def OnCancelarFiltrar(self,event):
         self.scFiltrar.Clear()
-        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
 
     def OnMenuContextual(self,event):
         self.PopupMenu(MenuContextual(self), event.GetPosition())
