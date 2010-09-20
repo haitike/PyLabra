@@ -203,8 +203,8 @@ class FramePrincipal(wx.Frame):
             listbox.Append(str(linea[0]) + " - " + linea[7])
     def commiter(self):
         self.deutschDB.commit() 
-        self.rellenarListBox(self.lbNota, self.deutschDB.extraer())
-        self.lvPalabras.OnRellenar(self.deutschDB.extraer())
+        self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
+        self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
         
     def obtener_nivel(self, tema, dict):
         for n, ts in dict.iteritems(): # iterItem asigna a n, la clave del dict, y a ts, el valor
