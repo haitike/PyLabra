@@ -101,6 +101,7 @@ class DialogoNuevaPalabra(wx.Dialog):
     def OnSalir(self,event):
         self.Destroy()
 
-    #def GetDatos(self):
-    #    return self.datos
-
+    def obtener_nivel(self, tema):
+        for n, ts in self.temas.iteritems(): # iterItem asigna a n, la clave del dict, y a ts, el valor
+            if tema in ts: 
+                return n

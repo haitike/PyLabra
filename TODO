@@ -1,3 +1,4 @@
-- Rellenar por completo DialogoNuevaPalabra al editar la palabra con los datos correspondientes, y que realize los cambios a la db
 - Centrar el menu contextual.
-- Mantener el filtro tras aÃ±adir palabras, borrar, editar, etc.
+- Mantener el filtro tras añadir palabras, borrar, editar, etc.
+- Arreglar problemas de rutas con los iconos.
+- Añadir flechitas en las cabezeras al ordenar ASC y DESC.
