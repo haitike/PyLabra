@@ -2,3 +2,30 @@
 - Mantener el filtro tras añadir palabras, borrar, editar, etc.
 - Arreglar problemas de rutas con los iconos.
 - Añadir flechitas en las cabezeras al ordenar ASC y DESC.
+- En la ventana principal, redimensionar controles al maximizar, o dejar la ventana de tamaño fijo.
+- Pedir confirmacion al borrar una palabra.
+- Poder redimensionar controles de palabra y nota.
+- Errores:
+     Traceback (most recent call last):
+     File "/home/daniel/pruebas-dai-read-only/py-deutsch/menuContextual.py",
+    line 21, in OnEditarPalabra
+       self.parent.editarPalabra(item)
+     File "/home/daniel/pruebas-dai-read-only/py-deutsch/framePrincipal.py",
+    line 107, in editarPalabra
+       seleccion = self.deutschDB.extraerLinea(palabra.GetText())
+     File "/home/daniel/pruebas-dai-read-only/py-deutsch/database.py",
+    line 50, in extraerLinea
+       return self.cursor.fetchall()[0]
+    IndexError: list index out of range
+ -------------------------------------------
+    Traceback (most recent call last):
+     File "/home/daniel/pruebas-dai-read-only/py-deutsch/menuContextual.py",
+    line 21, in OnEditarPalabra
+       self.parent.editarPalabra(item)
+     File "/home/daniel/pruebas-dai-read-only/py-deutsch/framePrincipal.py",
+    line 107, in editarPalabra
+       seleccion = self.deutschDB.extraerLinea(palabra.GetText())
+     File "/home/daniel/pruebas-dai-read-only/py-deutsch/database.py",
+    line 50, in extraerLinea
+       return self.cursor.fetchall()[0]
+    IndexError: list index out of range
