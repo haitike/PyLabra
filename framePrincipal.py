@@ -7,6 +7,7 @@ from database import BaseDeDatos
 from dialogoNuevaPalabra import DialogoNuevaPalabra
 from listviewVirtual import ListViewVirtual
 from menuContextual import MenuContextual
+import resources
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
@@ -29,11 +30,11 @@ class FramePrincipal(wx.Frame):
         
         # Barra de Herramientas
         barra_herramientas = self.CreateToolBar()
-        barra_herramientas.AddLabelTool(1, '', wx.Bitmap('./icons/nuevaPalabra.png'), shortHelp="Introduce una nueva palabra")
-        barra_herramientas.AddLabelTool(2, '', wx.Bitmap('./icons/borrarDB.png'), shortHelp="Borra la base de datos")
-        barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap('./icons/mostrarNavegador.png'), shortHelp="Muestra/Oculta el navegador")
+        barra_herramientas.AddLabelTool(1, '', wx.Bitmap(resources.images['nuevaPalabra']), shortHelp="Introduce una nueva palabra")
+        barra_herramientas.AddLabelTool(2, '', wx.Bitmap(resources.images['borrarDB']), shortHelp="Borra la base de datos")
+        barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap(resources.images['mostrarNavegador']), shortHelp="Muestra/Oculta el navegador")
         barra_herramientas.AddSeparator()
-        barra_herramientas.AddLabelTool(4, '', wx.Bitmap('./icons/salir.png'), shortHelp="Salir")
+        barra_herramientas.AddLabelTool(4, '', wx.Bitmap(resources.images['salir']), shortHelp="Salir")
         barra_herramientas.Realize()
 
         # Barra de Busqueda del Navegador Web.
