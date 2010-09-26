@@ -81,11 +81,10 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
         self.Bind(wx.EVT_LIST_COL_CLICK, self.OnOrdenar, id=self.lvPalabras.GetId())
-        self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self.OnMenuContextual, id=self.lvPalabras.GetId())        
+        self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self.OnMostrarMenuContextual, id=self.lvPalabras.GetId())        
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
-        #self.Bind(wx.EVT_MENU, self.editarPalabra, id=MenuContextual.editarPalabra.GetId())
                 
         self.Centre()
         self.Show()
@@ -179,8 +178,11 @@ class FramePrincipal(wx.Frame):
         self.scFiltrar.Clear()
         self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
 
-    def OnMenuContextual(self,event):
-        self.PopupMenu(MenuContextual(self), event.GetPosition())
+    def OnMostrarMenuContextual(self,event):
+        if event.GetIndex() != -1:
+            posicion = event.GetPosition()
+            posicion.Set(posicion.Get()[0],posicion.Get()[1] + 70) # X vale lo mismo, a Y se le suma 70.
+            self.PopupMenu(MenuContextual(self), posicion)
     
     def rellenarListBox(self, listbox, array):
         listbox.Clear() 

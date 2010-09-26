@@ -2,7 +2,7 @@ import wx
 
 class ListViewVirtual(wx.ListCtrl):
     def __init__(self, parent, pos, size,array):
-        wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_VRULES|wx.LC_HRULES)
+        wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_VRULES|wx.LC_HRULES|wx.LC_SINGLE_SEL)
 
         self.InsertColumn(0,"No")
         self.InsertColumn(1,"Palabra")
