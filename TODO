@@ -4,28 +4,11 @@
 - En la ventana principal, redimensionar controles al maximizar, o dejar la ventana de tamaño fijo.
 - Poder redimensionar controles de palabra y nota.
 - Añadir un About, que diga la version, y nuestros nombre, junto co nuestro correo
+- Mejorar Compatibilidad con Windows
+- Rellenar con información completa los docstrings
+- Rediseñar los niveles/temas
+- Renombrar los géneros
+- Subir a sourceforge/github/launchpad (solo este proyecto quitando los antiguos)
+- En un futuro poder crear examenes con las palabras introducidas, configurable a nivel, tipo de palabras, etc. y con un registro de las notas
+- cargar, guardar y cambiar entre base de datos que seria como archivos save en una carpeta propia asi el usuario puede tener todas las que quiera
 
-- Errores:
-     Traceback (most recent call last):
-     File "/home/daniel/pruebas-dai-read-only/py-deutsch/menuContextual.py",
-    line 21, in OnEditarPalabra
-       self.parent.editarPalabra(item)
-     File "/home/daniel/pruebas-dai-read-only/py-deutsch/framePrincipal.py",
-    line 107, in editarPalabra
-       seleccion = self.deutschDB.extraerLinea(palabra.GetText())
-     File "/home/daniel/pruebas-dai-read-only/py-deutsch/database.py",
-    line 50, in extraerLinea
-       return self.cursor.fetchall()[0]
-    IndexError: list index out of range
- -------------------------------------------
-    Traceback (most recent call last):
-     File "/home/daniel/pruebas-dai-read-only/py-deutsch/menuContextual.py",
-    line 21, in OnEditarPalabra
-       self.parent.editarPalabra(item)
-     File "/home/daniel/pruebas-dai-read-only/py-deutsch/framePrincipal.py",
-    line 107, in editarPalabra
-       seleccion = self.deutschDB.extraerLinea(palabra.GetText())
-     File "/home/daniel/pruebas-dai-read-only/py-deutsch/database.py",
-    line 50, in extraerLinea
-       return self.cursor.fetchall()[0]
-    IndexError: list index out of range
