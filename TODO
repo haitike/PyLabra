@@ -3,7 +3,7 @@
 - Añadir flechitas en las cabezeras al ordenar ASC y DESC.
 - En la ventana principal, redimensionar controles al maximizar, o dejar la ventana de tamaño fijo.
 - Poder redimensionar controles de palabra y nota.
-
+- Añadir un About, que diga la version, y nuestros nombre, junto co nuestro correo
 
 - Errores:
      Traceback (most recent call last):
