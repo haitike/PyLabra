@@ -55,23 +55,29 @@ class FramePrincipal(wx.Frame):
         vboxNavegadorWeb.Add(self.browser, 1, wx.EXPAND)
         self.panel2.SetSizer(vboxNavegadorWeb)
         self.panel.SetFocus()
-
+        
+        vboxPanel = wx.BoxSizer(wx.VERTICAL)
         # Filtrador
         self.scFiltrar = wx.SearchCtrl(self.panel, -1, pos=(5,10), size=(170,26), style=wx.TE_PROCESS_ENTER)
         self.scFiltrar.ShowCancelButton(True)
+        vboxPanel.Add(self.scFiltrar, 0)
 
         # ListView (Panel 1)        
         self.lvPalabras = ListViewVirtual(self.panel,(5,50),(500,400),self.deutschDB.extraer())
-
+        vboxPanel.Add(self.lvPalabras, 0, wx.EXPAND)
+        
         # ListBox (Panel 1)
         self.lbNota = wx.ListBox(self.panel, -1,(5,460),(500,360),"", wx.LB_SINGLE)
-
+        vboxPanel.Add(self.lbNota, 0, wx.EXPAND)
+        
+        self.panel.SetSizer(vboxPanel)
+        vboxPanel.SetSizeHints(self) #Tamanyo minimo para el sizer
         # Rellenados Automáticos
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer())        
 
         # La ventana comienza sin dividir.
         self.separador.SplitVertically(self.panel, self.panel2)
-        self.separador.Unsplit()
+        #self.separador.Unsplit()
 
         # EVENTOS
         self.Bind(wx.EVT_TOOL, self.OnNuevaPalabra, id=1)

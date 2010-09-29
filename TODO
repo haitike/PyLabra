@@ -1,8 +1,6 @@
 - Centrar el menu contextual. ¿Listo ahora o aún es mejorable?
 - Mantener el filtro tras añadir palabras, borrar, editar, etc.
 - Añadir flechitas en las cabezeras al ordenar ASC y DESC.
-- En la ventana principal, redimensionar controles al maximizar, o dejar la ventana de tamaño fijo.
-- Poder redimensionar controles de palabra y nota.
 - Añadir un About, que diga la version, y nuestros nombre, junto co nuestro correo
 - Mejorar Compatibilidad con Windows
 - Rellenar con información completa los docstrings
