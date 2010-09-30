@@ -64,7 +64,7 @@ class DialogoNuevaPalabra(wx.Dialog):
 
         self.Bind(wx.EVT_COMBOBOX, self.OnCambiarNivel, id=self.cbNivel.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnGuardarSalir, id=self.bGuardarSalir.GetId())
-        self.Bind(wx.EVT_BUTTON, lambda: self.Destroy(), id=self.bSalir.GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnSalir, id=self.bSalir.GetId())
         self.Bind(wx.EVT_RADIOBOX, self.OnCambiarTipo, id=self.rbTipo.GetId())
 
     def OnCambiarTipo(self,event):
@@ -97,6 +97,9 @@ class DialogoNuevaPalabra(wx.Dialog):
 
         self.Destroy()
         self.SetReturnCode(1) # Hacemos que al llamarlo con ShowModal devuelva el integer 1.   
+
+    def OnSalir(self,event):
+        self.Destroy()
 
     def obtener_nivel(self, tema):
         for n, ts in self.temas.iteritems(): # iterItem asigna a n, la clave del dict, y a ts, el valor
