@@ -1,5 +1,17 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+# py-deutsch is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Py-deutsch is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Py-deutsch.  If not, see <http://www.gnu.org/licenses/>.
 
 import wx
 import wx.html as html
@@ -8,6 +20,8 @@ from dialogoNuevaPalabra import DialogoNuevaPalabra
 from listviewVirtual import ListViewVirtual
 from menuContextual import MenuContextual
 import resources
+import sys
+import wx.lib.wxpTag
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
@@ -34,6 +48,7 @@ class FramePrincipal(wx.Frame):
         barra_herramientas.AddLabelTool(2, '', wx.Bitmap(resources.images['borrarDB']), shortHelp="Borra la base de datos")
         barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap(resources.images['mostrarNavegador']), shortHelp="Muestra/Oculta el navegador")
         barra_herramientas.AddSeparator()
+        barra_herramientas.AddLabelTool(5, '', wx.Bitmap(resources.images['about']), shortHelp="Acerca de...")
         barra_herramientas.AddLabelTool(4, '', wx.Bitmap(resources.images['salir']), shortHelp="Salir")
         barra_herramientas.Realize()
 
@@ -84,6 +99,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.OnBorrarTodo, id=2)
         self.Bind(wx.EVT_TOOL, self.OnQuitarBrowser, id=3)
         self.Bind(wx.EVT_TOOL, self.OnQuitar, id=4)
+        self.Bind(wx.EVT_TOOL, self.OnAbout, id=5)
         self.Bind(wx.EVT_BUTTON, self.OnBuscarWeb, id=bBuscarWeb.GetId())
         self.Bind(wx.EVT_CLOSE, self.OnQuitar, id=self.GetId())
         self.Bind(wx.EVT_LIST_COL_CLICK, self.OnOrdenar, id=self.lvPalabras.GetId())
@@ -92,7 +108,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
                 
-        self.Centre()
+        self.Maximize()
         self.Show()
 
     # METODOS
@@ -107,7 +123,54 @@ class FramePrincipal(wx.Frame):
                                       datos["traduccion"],datos["tipo"],datos ["tema"],datos["notas"])
             self.commiter()
         nuevaPalabra.Destroy()
+        
+    def OnAbout(self, envent):
+        self.text = '''
+<html>
+<body bgcolor="#CCCCCC">
+    <center><table bgcolor="#458154" width="100%%" cellspacing="0"
+    cellpadding="0" border="1">
+    <tr>
+        <td align="center">
+            <h1>PyLabra Alpha release</h1>
+            <h3>Versi&oacute;n de wxPython: %s</h3>
+            Corriendo en Python %s<br>
+        </td>
+    </tr>
+    </table>
+    <h1>Autores de PyLabra:</h1>
+    <p>Alejandro Alcalde <em>(algui91)</em> -> <a href="mailto:algui91@gmail.com">algui91@gmail.com</a></p>
+    <p>Francisco José Rodríguez <em>(haitike)</em> -> <a href="mailto:haitike@gmail.com">haitike@gmail.com</a></p>
 
+    <p>
+    <font size="-1">About parcialmente realizado de los ejemplos de wxPython.</font>
+    </p>
+    <p>
+    <font size="-1">Licencia: http://www.gnu.org/licenses/gpl-3.0.html</font>
+    </p>
+
+
+    <p><wxp module="wx" class="Button">
+        <param name="label" value="Cerrar">
+        <param name="id"    value="ID_OK">
+    </wxp></p>
+    </center>
+</body>
+</html>
+'''
+        about = wx.Dialog(self, -1, 'Acerca de PyLabra...', size=(420,420))
+        FrameHtml = wx.html.HtmlWindow(about, -1, size=(420, -1))
+        py_version = sys.version.split()[0]
+        txt = self.text % (wx.VERSION_STRING, py_version)
+        FrameHtml.SetPage(txt)
+        btn = FrameHtml.FindWindowById(wx.ID_OK)
+        ir = FrameHtml.GetInternalRepresentation()
+        FrameHtml.SetSize( (ir.GetWidth()+25, ir.GetHeight()+25) )
+        self.SetClientSize(FrameHtml.GetSize())
+        self.CentreOnParent(wx.BOTH)
+        
+        about.ShowModal()
+        
     def editarPalabra(self, palabra):
         editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
         seleccion = self.deutschDB.extraerLinea(palabra.GetText())

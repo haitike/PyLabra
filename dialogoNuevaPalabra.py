@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+
+# py-deutsch is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Py-deutsch is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Py-deutsch.  If not, see <http://www.gnu.org/licenses/>.
+
 import wx
 
 class DialogoNuevaPalabra(wx.Dialog):
@@ -64,7 +79,7 @@ class DialogoNuevaPalabra(wx.Dialog):
 
         self.Bind(wx.EVT_COMBOBOX, self.OnCambiarNivel, id=self.cbNivel.GetId())
         self.Bind(wx.EVT_BUTTON, self.OnGuardarSalir, id=self.bGuardarSalir.GetId())
-        self.Bind(wx.EVT_BUTTON, self.OnSalir, id=self.bSalir.GetId())
+        self.Bind(wx.EVT_BUTTON, lambda: self.Destroy(), id=self.bSalir.GetId())
         self.Bind(wx.EVT_RADIOBOX, self.OnCambiarTipo, id=self.rbTipo.GetId())
 
     def OnCambiarTipo(self,event):
@@ -97,9 +112,6 @@ class DialogoNuevaPalabra(wx.Dialog):
 
         self.Destroy()
         self.SetReturnCode(1) # Hacemos que al llamarlo con ShowModal devuelva el integer 1.   
-
-    def OnSalir(self,event):
-        self.Destroy()
 
     def obtener_nivel(self, tema):
         for n, ts in self.temas.iteritems(): # iterItem asigna a n, la clave del dict, y a ts, el valor
