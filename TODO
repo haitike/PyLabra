@@ -10,3 +10,4 @@
 - cargar, guardar y cambiar entre base de datos que seria como archivos save en una carpeta propia asi el usuario puede tener todas las que quiera.
 - Internalización / Regionalización estilo gettext basada en locales. Extra: Puede que poder elegir el idioma de la interfaz en las opciones.
 - Añadir accesos directos (hotkeys)
+- Hacer pequeños examenes para evaluar el conocimiento

@@ -21,13 +21,13 @@ class DialogoNuevaPalabraBase(wx.Dialog):
     niveles = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
 
     datos = { 
-                "palabra"     :        "",
-                "plural"       :        "",
-                "genero"       :        "NULL",    #NULL de SQL
-                "traduccion":        "",
-                "tipo"           :         "NULL",
-                "tema"           :         "NULL",
-                "notas"         :         ""
+                "palabra":"",
+                "plural":"",
+                "genero":"NULL",    #NULL de SQL
+                "traduccion":"",
+                "tipo":"NULL",
+                "tema":"NULL",
+                "notas":""
                 }
                 
     def __init__(self, parent, id, title):
@@ -35,7 +35,7 @@ class DialogoNuevaPalabraBase(wx.Dialog):
 
         panel = wx.Panel(self, -1)
         vbox = wx.BoxSizer(wx.VERTICAL)
-
+        
         wx.StaticBox(panel, -1, 'Nueva Palabra', (55, 5), (340, 320))
         wx.StaticText(panel, -1, 'Tipo', (65, 30))
         self.rbTipo = wx.RadioBox(panel,-1,'',(145, 10),(160,28),choices=("sust.","verbo","adj.","otro"),style=wx.NO_BORDER | wx.RA_SPECIFY_COLS)

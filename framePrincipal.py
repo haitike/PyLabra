@@ -41,6 +41,28 @@ class FramePrincipal(wx.Frame):
         self.panel2 = wx.Panel(self.separador,-1)
         vboxNavegadorWeb = wx.BoxSizer(wx.VERTICAL)
         hboxBuscarWeb = wx.BoxSizer(wx.HORIZONTAL)
+        # Menu
+        menu = wx.MenuBar()
+        archivo = wx.Menu()
+        
+        abrir = wx.MenuItem(archivo, 1,'A&brir Idioma\tCtrl+A')
+        guardar = wx.MenuItem(archivo,  -1, '&Guardar idioma\tCtrl+G')
+        borrar = wx.MenuItem(archivo,  -1, '&Borrar Idioma\tCtrl+B')
+        cerrar = wx.MenuItem(archivo,  4, '&Cerrar PyLabra\tCtrl+C')
+        
+        #abrir.SetBitmap(wx.Bitmap(resources.images['nuevaPalabra']))
+        #cerrar.SetBitmap(wx.Bitmap(resources.images['salir']))
+        
+        menu.Append(archivo, '&Archivo')
+        
+        archivo.AppendItem(abrir)
+        archivo.AppendItem(guardar)
+        archivo.AppendItem(borrar)
+        archivo.AppendItem(cerrar)
+        self.SetMenuBar(menu)
+
+        self.Centre()
+        self.Show(True)
         
         # Barra de Herramientas
         barra_herramientas = self.CreateToolBar()
