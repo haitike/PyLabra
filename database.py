@@ -32,16 +32,12 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
+        self.campos = 'No int(5) PRIMARY KEY, Palabra varchar2(50), Genero varchar2(10), \
+            Plural varchar2(10),  Traduccion varchar2(50), Tipo varchar2(15), nivel tinyint, Notas varchar(100)'
         self.cursor.execute(
-            "create table if not exists palabras \
-            (No int(5) PRIMARY KEY, Palabra varchar2(50), Genero varchar2(10), \
-            Plural varchar2(10),  Traduccion varchar2(50), Tipo varchar2(15), Tema tinyint, Notas varchar(100));\
-        "
-        ) 
+            "create table if not exists palabras ("+self.campos+");") 
         self.cursor.execute(
-            "create table if not exist indiceTablas \
-            (CodTabla int(3) primary key, nombreTabla varchar2(10));"
-        )
+            "create table if not exists tablaIndice (nombreTabla varchar2(20) primary key);")
 
     def introducir(self,indice,palabra,genero,plural,traduccion,tipo,tema,notas):
         try:
@@ -52,7 +48,7 @@ class BaseDeDatos:
     
     def editar(self,palabra,genero,plural,traduccion,tipo,tema,notas,indice):
         try:
-            self.cursor.execute("update palabras set Palabra=?, Genero=?, Plural=?, Traduccion=?, Tipo=?, Tema=?, Notas=? where No=?",
+            self.cursor.execute("update palabras set Palabra=?, Genero=?, Plural=?, Traduccion=?, Tipo=?, nivel=?, Notas=? where No=?",
                 (palabra, genero, plural, traduccion, tipo, tema, notas, indice))     #Intruccion parametrizada qmark style   
         except lite.Error, error:
             print "Error: " + str(error)

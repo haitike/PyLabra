@@ -27,9 +27,10 @@ import os
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
     # ATRIBUTOS
-    directorioBD = 'datos'
-    if not os.path.isdir(directorioBD): os.mkdir(os.path.join(os.getcwd(),directorioBD)) # creo un directorio a parte para la BD
-    deutschDB = BaseDeDatos("./"+directorioBD+"/BDIdiomas.db")
+    directorioBD = ('data',  'BDIdiomas.db')
+    if not os.path.isdir(directorioBD[0]): os.mkdir(os.path.join(os.getcwd(),directorioBD[0])) # creo un directorio a parte para la BD
+    #if not os.path.isfile(directorioBD[0]+'/'+directorioBD[1]): 
+    deutschDB = BaseDeDatos("./"+directorioBD[0]+'/'+directorioBD[1])
     criterio = "No"
     orden = "ASC"
 

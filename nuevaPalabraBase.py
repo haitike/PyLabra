@@ -91,7 +91,7 @@ class DialogoNuevaPalabraBase(wx.Dialog):
         self.datos["palabra"] = self.stPalabra.GetValue()
         self.datos["traduccion"] = self.stTraduccion.GetValue()
         self.datos["tipo"] = self.rbTipo.GetStringSelection()
-        self.datos["tema"] = self.cbTema.GetValue()
+        #self.datos["tema"] = self.cbTema.GetValue()
         self.datos["notas"] = self.stNotas.GetValue()     
 
         if self.rbTipo.GetSelection() == 0: # Si es Sustantivo
