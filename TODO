@@ -11,3 +11,4 @@
 - Internalización / Regionalización estilo gettext basada en locales. Extra: Puede que poder elegir el idioma de la interfaz en las opciones.
 - Añadir accesos directos (hotkeys)
 - Hacer pequeños examenes para evaluar el conocimiento
+- En la BD hace falta saber como almacenar en el campo nombreTabla de la tabla indiceTablas el nombre de la nueva tabla de idiomas que se crea. Se hace con un trigger, pero hemos de saber como almacenar el nombre de la tabla

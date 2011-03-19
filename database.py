@@ -16,7 +16,7 @@
 import sqlite3 as lite
 
 class BaseDeDatos:
-    """Clase gestora de base de datos sqlite3 para el programa py-deutsch."""
+    """Clase gestora de base de datos sqlite3 para el programa PyLabra."""
     connection = None
     cursor = None
     conectado = False  
@@ -32,10 +32,16 @@ class BaseDeDatos:
         self.conectado = True
     
     def crearTablaOperacion(self):
-        self.cursor.execute("create table if not exists palabras (No int, Palabra varchar, Genero varchar, \
-            Plural varchar,  Traduccion varchar, Tipo varchar, Tema tinyint, Notas varchar);") 
-        self.cursor.execute("create table if not exists gramatica (indice int, texto varchar);") 
-        self.cursor.execute("create table if not exists opciones (nombre varchar, valor boolean);") 
+        self.cursor.execute(
+            "create table if not exists palabras \
+            (No int(5) PRIMARY KEY, Palabra varchar2(50), Genero varchar2(10), \
+            Plural varchar2(10),  Traduccion varchar2(50), Tipo varchar2(15), Tema tinyint, Notas varchar(100));\
+        "
+        ) 
+        self.cursor.execute(
+            "create table if not exist indiceTablas \
+            (CodTabla int(3) primary key, nombreTabla varchar2(10));"
+        )
 
     def introducir(self,indice,palabra,genero,plural,traduccion,tipo,tema,notas):
         try:

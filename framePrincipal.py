@@ -22,11 +22,14 @@ from menuContextual import MenuContextual
 import resources
 import sys
 import wx.lib.wxpTag
+import os
 
 class FramePrincipal(wx.Frame):
     """Ventana principal del programa """
     # ATRIBUTOS
-    deutschDB = BaseDeDatos("deutsch.db")
+    directorioBD = 'datos'
+    if not os.path.isdir(directorioBD): os.mkdir(os.path.join(os.getcwd(),directorioBD)) # creo un directorio a parte para la BD
+    deutschDB = BaseDeDatos("./"+directorioBD+"/BDIdiomas.db")
     criterio = "No"
     orden = "ASC"
 

@@ -27,7 +27,7 @@ try:
 
     programa = wx.App()
     try:
-        FramePrincipal(None, -1, 'Py-Deutsch')
+        FramePrincipal(None, -1, 'PyLabra')
         programa.MainLoop()
     finally:
         del programa
