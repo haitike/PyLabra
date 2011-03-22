@@ -24,20 +24,26 @@ class BaseDeDatos:
     def __init__ (self, archivo):                     
         try:                                                     
             self.connection = lite.connect(archivo) 
+            self.conectado = True
         except lite.Error, error:                     
             print "Error: " + str(error)          
             return                                        
         self.cursor = self.connection.cursor()     
-        self.crearTablaOperacion()
-        self.conectado = True
+        self.inicializar()
     
-    def crearTablaOperacion(self):
+    def crearNuevoIdioma(self):
+        pass
+        
+    def borrarIdioma(self):
+        pass
+        
+    def inicializar(self):
         self.campos = 'No int(5) PRIMARY KEY, Palabra varchar2(50), Genero varchar2(10), \
             Plural varchar2(10),  Traduccion varchar2(50), Tipo varchar2(15), nivel tinyint, Notas varchar(100)'
+        #self.cursor.execute(
+        #   "create table if not exists palabras ("+self.campos+");") 
         self.cursor.execute(
-            "create table if not exists palabras ("+self.campos+");") 
-        self.cursor.execute(
-            "create table if not exists tablaIndice (nombreTabla varchar2(20) primary key);")
+            "create table if not exists tablaIndice (CodIdioma int(3), nombreTabla varchar2(20) primary key);")
 
     def introducir(self,indice,palabra,genero,plural,traduccion,tipo,tema,notas):
         try:

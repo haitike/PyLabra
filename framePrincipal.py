@@ -19,6 +19,7 @@ from database import BaseDeDatos
 from dialogoNuevaPalabra import DialogoNuevaPalabra
 from listviewVirtual import ListViewVirtual
 from menuContextual import MenuContextual
+from agregarIdioma import agregarIdioma
 import resources
 import sys
 import wx.lib.wxpTag
@@ -46,24 +47,26 @@ class FramePrincipal(wx.Frame):
         vboxNavegadorWeb = wx.BoxSizer(wx.VERTICAL)
         hboxBuscarWeb = wx.BoxSizer(wx.HORIZONTAL)
         # Menu
-        menu = wx.MenuBar()
-        archivo = wx.Menu()
+        self.menu = wx.MenuBar()
+        self.archivo = wx.Menu()
         
-        abrir = wx.MenuItem(archivo, 1,'A&brir Idioma\tCtrl+A')
-        guardar = wx.MenuItem(archivo,  -1, '&Guardar idioma\tCtrl+G')
-        borrar = wx.MenuItem(archivo,  -1, '&Borrar Idioma\tCtrl+B')
-        cerrar = wx.MenuItem(archivo,  4, '&Cerrar PyLabra\tCtrl+C')
+        self.mCrear = wx.MenuItem(self.archivo, -1,'C&rear Idioma\tCtrl+C')
+        self.mAbrir = wx.MenuItem(self.archivo, -1,'A&brir Idioma\tCtrl+A')
+        self.mGuardar = wx.MenuItem(self.archivo,  -1, '&Guardar idioma\tCtrl+G')
+        self.mBorrar = wx.MenuItem(self.archivo,  -1, '&Borrar Idioma\tCtrl+B')
+        self.mCerrar = wx.MenuItem(self.archivo,  4, '&Cerrar PyLabra\tCtrl+C')
         
         #abrir.SetBitmap(wx.Bitmap(resources.images['nuevaPalabra']))
         #cerrar.SetBitmap(wx.Bitmap(resources.images['salir']))
         
-        menu.Append(archivo, '&Archivo')
+        self.menu.Append(self.archivo, '&Archivo')
         
-        archivo.AppendItem(abrir)
-        archivo.AppendItem(guardar)
-        archivo.AppendItem(borrar)
-        archivo.AppendItem(cerrar)
-        self.SetMenuBar(menu)
+        self.archivo.AppendItem(self.mCrear)
+        self.archivo.AppendItem(self.mAbrir)
+        self.archivo.AppendItem(self.mGuardar)
+        self.archivo.AppendItem(self.mBorrar)
+        self.archivo.AppendItem(self.mCerrar)
+        self.SetMenuBar(self.menu)
 
         self.Centre()
         self.Show(True)
@@ -133,6 +136,7 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
+        self.Bind(wx.EVT_MENU,  self.onNuevoIdioma,  id=self.mCrear.GetId())
                 
         self.Maximize()
         self.Show()
@@ -290,3 +294,6 @@ class FramePrincipal(wx.Frame):
         self.deutschDB.commit() 
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
         self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
+    def onNuevoIdioma(self,  event):
+        addIdioma = agregarIdioma(self, -1, 'Introducir el nombre del nuevo idioma')
+        if addIdioma.ShowModal() == 1: print "modal"
