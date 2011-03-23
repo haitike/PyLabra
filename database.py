@@ -26,7 +26,7 @@ class BaseDeDatos:
             self.connection = lite.connect(archivo) 
             self.conectado = True
         except lite.Error, error:                     
-            print "Error: " + str(error)          
+            print "Ocurrio un error con la Base de Datos: " + str(error)          
             return                                        
         self.cursor = self.connection.cursor()     
         self.inicializar()

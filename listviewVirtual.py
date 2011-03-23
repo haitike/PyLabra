@@ -33,8 +33,8 @@ class ListViewVirtual(wx.ListCtrl):
         self.OnRellenar(array)
     
     def OnRellenar(self, array):
-        self.array = array                  # Guardo el array para su posterior uso en otros metodos.
-        self.SetItemCount(len(self.array))  # SetitemCount llamara a OnGetItemText las interaciones necesarias.
-    
+        #self.array = array                  # Guardo el array para su posterior uso en otros metodos.
+        #self.SetItemCount(len(self.array))  # SetitemCount llamara a OnGetItemText las interaciones necesarias.
+        pass
     def OnGetItemText(self, item, col):       # Sobreescritura del metodo virtual original (polimorfismo).
         return "%s" % (self.array[item][col]) # %s convierte a string como en el scanf de C.
