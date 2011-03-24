@@ -46,26 +46,38 @@ class FramePrincipal(wx.Frame):
         self.panel2 = wx.Panel(self.separador,-1)
         vboxNavegadorWeb = wx.BoxSizer(wx.VERTICAL)
         hboxBuscarWeb = wx.BoxSizer(wx.HORIZONTAL)
+        
         # Menu
         self.menu = wx.MenuBar()
-        self.archivo = wx.Menu()
+        self.mArchivo = wx.Menu()
+        self.mPreferencias = wx.Menu()
+        self.mAyuda = wx.Menu()
+
+        self.mIdioma = wx.Menu()
         
-        self.mCrear = wx.MenuItem(self.archivo, -1,'C&rear Idioma\tCtrl+C')
-        self.mAbrir = wx.MenuItem(self.archivo, -1,'A&brir Idioma\tCtrl+A')
-        self.mGuardar = wx.MenuItem(self.archivo,  -1, '&Guardar idioma\tCtrl+G')
-        self.mBorrar = wx.MenuItem(self.archivo,  -1, '&Borrar Idioma\tCtrl+B')
-        self.mCerrar = wx.MenuItem(self.archivo,  4, '&Cerrar PyLabra\tCtrl+C')
+        self.miCrear = wx.MenuItem(self.mArchivo, -1,_('C&rear Idioma\tCtrl+C'))
+        self.miAbrir = wx.MenuItem(self.mArchivo, -1,_('A&brir Idioma\tCtrl+A'))
+        self.miGuardar = wx.MenuItem(self.mArchivo,  -1, _('&Guardar idioma\tCtrl+G'))
+        self.miBorrar = wx.MenuItem(self.mArchivo,  -1, _('&Borrar Idioma\tCtrl+B'))
+        self.miCerrar = wx.MenuItem(self.mArchivo,  4, _('&Cerrar PyLabra\tCtrl+C'))
+        self.miEspanol = wx.MenuItem(self.mPreferencias, -1, _('Spanish'))
+        self.miIngles = wx.MenuItem(self.mPreferencias, -1, _('English'))
+        self.miAbout = wx.MenuItem(self.mAyuda, 5, _('&Acerca de...'))
         
-        #abrir.SetBitmap(wx.Bitmap(resources.images['nuevaPalabra']))
-        #cerrar.SetBitmap(wx.Bitmap(resources.images['salir']))
+        self.menu.Append(self.mArchivo, _('&Archivo'))
+        self.menu.Append(self.mPreferencias, _('&Preferencias'))
+        self.menu.Append(self.mAyuda, _('A&yuda'))
         
-        self.menu.Append(self.archivo, '&Archivo')
-        
-        self.archivo.AppendItem(self.mCrear)
-        self.archivo.AppendItem(self.mAbrir)
-        self.archivo.AppendItem(self.mGuardar)
-        self.archivo.AppendItem(self.mBorrar)
-        self.archivo.AppendItem(self.mCerrar)
+        self.mArchivo.AppendItem(self.miCrear)
+        self.mArchivo.AppendItem(self.miAbrir)
+        self.mArchivo.AppendItem(self.miGuardar)
+        self.mArchivo.AppendItem(self.miBorrar)
+        self.mArchivo.AppendSeparator()
+        self.mArchivo.AppendItem(self.miCerrar)
+        self.mIdioma.AppendItem(self.miEspanol)
+        self.mIdioma.AppendItem(self.miIngles)
+        self.mPreferencias.AppendMenu(-1,_('&Idioma del programa'),self.mIdioma)
+        self.mAyuda.AppendItem(self.miAbout)
         self.SetMenuBar(self.menu)
 
         self.Centre()
@@ -73,21 +85,21 @@ class FramePrincipal(wx.Frame):
         
         # Barra de Herramientas
         barra_herramientas = self.CreateToolBar()
-        barra_herramientas.AddLabelTool(1, '', wx.Bitmap(resources.images['nuevaPalabra']), shortHelp="Introduce una nueva palabra")
-        barra_herramientas.AddLabelTool(2, '', wx.Bitmap(resources.images['borrarDB']), shortHelp="Borra la base de datos")
-        barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap(resources.images['mostrarNavegador']), shortHelp="Muestra/Oculta el navegador")
+        barra_herramientas.AddLabelTool(1, '', wx.Bitmap(resources.images['nuevaPalabra']), shortHelp=_("Introduce una nueva palabra"))
+        barra_herramientas.AddLabelTool(2, '', wx.Bitmap(resources.images['borrarDB']), shortHelp=_("Borra la base de datos"))
+        barra_herramientas.AddCheckLabelTool(3, '', wx.Bitmap(resources.images['mostrarNavegador']), shortHelp=_("Muestra/Oculta el navegador"))
         barra_herramientas.AddSeparator()
-        barra_herramientas.AddLabelTool(5, '', wx.Bitmap(resources.images['about']), shortHelp="Acerca de...")
-        barra_herramientas.AddLabelTool(4, '', wx.Bitmap(resources.images['salir']), shortHelp="Salir")
+        barra_herramientas.AddLabelTool(5, '', wx.Bitmap(resources.images['about']), shortHelp=_("Acerca de..."))
+        barra_herramientas.AddLabelTool(4, '', wx.Bitmap(resources.images['salir']), shortHelp=_("Salir"))
         barra_herramientas.Realize()
 
         # Barra de Busqueda del Navegador Web.
         buscadorWeb = wx.Panel(self.panel2, -1, size=(-1, 20))
         buscadorWeb.SetBackgroundColour('#6f6a59')
         buscadorWeb.SetForegroundColour('WHITE')
-        stBuscarWeb = wx.StaticText(buscadorWeb, -1, 'Buscar en WordReference', (5, 5))
+        stBuscarWeb = wx.StaticText(buscadorWeb, -1, _('Buscar en WordReference'), (5, 5))
         self.tcPalabraBuscarWeb = wx.TextCtrl(buscadorWeb, -1, '',size=(150,-1))
-        bBuscarWeb = wx.Button(buscadorWeb, -1, 'Buscar')  
+        bBuscarWeb = wx.Button(buscadorWeb, -1, _('Buscar'))  
         hboxBuscarWeb.Add(stBuscarWeb, 1, wx.TOP | wx.BOTTOM | wx.LEFT, 5)
         hboxBuscarWeb.Add(self.tcPalabraBuscarWeb, 0)        
         hboxBuscarWeb.Add(bBuscarWeb, 0)
@@ -136,14 +148,14 @@ class FramePrincipal(wx.Frame):
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_TEXT_ENTER, self.OnFiltrar, id=self.scFiltrar.GetId())
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancelarFiltrar, id=self.scFiltrar.GetId())
-        self.Bind(wx.EVT_MENU,  self.onNuevoIdioma,  id=self.mCrear.GetId())
+        self.Bind(wx.EVT_MENU,  self.onNuevoIdioma,  id=self.miCrear.GetId())
                 
         self.Maximize()
         self.Show()
 
     # METODOS
     def OnNuevaPalabra(self,event):
-        nuevaPalabra = DialogoNuevaPalabra(self, -1, 'Introducir Nueva Palabra')
+        nuevaPalabra = DialogoNuevaPalabra(self, -1, _('Introducir Nueva Palabra'))
         if nuevaPalabra.ShowModal() == 1:
             datos = nuevaPalabra.datos      
             try: nuevo_indice = self.deutschDB.extraer()[-1][0] + 1
@@ -155,8 +167,8 @@ class FramePrincipal(wx.Frame):
         nuevaPalabra.Destroy()
         
     def OnAbout(self, envent):
-        self.text = '''
-<html>
+        self.text = _('''
+        <html>
 <body bgcolor="#CCCCCC">
     <center><table bgcolor="#458154" width="100%%" cellspacing="0"
     cellpadding="0" border="1">
@@ -190,8 +202,8 @@ class FramePrincipal(wx.Frame):
     </center>
 </body>
 </html>
-'''
-        about = wx.Dialog(self, -1, 'Acerca de PyLabra...', size=(420,420))
+''')
+        about = wx.Dialog(self, -1, _('Acerca de PyLabra...'), size=(420,420))
         FrameHtml = wx.html.HtmlWindow(about, -1, size=(420, -1))
         py_version = sys.version.split()[0]
         txt = self.text % (wx.VERSION_STRING, py_version)
@@ -205,7 +217,7 @@ class FramePrincipal(wx.Frame):
         about.ShowModal()
         
     def editarPalabra(self, palabra):
-        editarPalabra = DialogoNuevaPalabra(self, -1, 'Editar palabra')
+        editarPalabra = DialogoNuevaPalabra(self, -1, _('Editar palabra'))
         seleccion = self.deutschDB.extraerLinea(palabra.GetText())
 
         editarPalabra.stPalabra.AppendText(seleccion[1])
@@ -296,5 +308,5 @@ class FramePrincipal(wx.Frame):
         self.rellenarListBox(self.lbNota, self.deutschDB.extraer(self.criterio,self.orden))
         self.lvPalabras.OnRellenar(self.deutschDB.extraer(self.criterio,self.orden))
     def onNuevoIdioma(self,  event):
-        addIdioma = agregarIdioma(self, -1, 'Introducir el nombre del nuevo idioma')
+        addIdioma = agregarIdioma(self, -1, _('Introducir el nombre del nuevo idioma'))
         if addIdioma.ShowModal() == 1: print "modal"

@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Py-deutsch.  If not, see <http://www.gnu.org/licenses/>.
 
+import language
+  
 try:
     import wxversion
     wxversion.select("2.8") # Forzando la version 2.8 de WX
@@ -23,8 +25,15 @@ try:
         import psyco
         psyco.profile()
     except ImportError:
-        print "\nSe recomienda la instalación del compilador en tiempo de ejecución 'Python-Psyco' para mejorar el rendimiento.\n"
+        print _("\nSe recomienda la instalación del compilador en tiempo de ejecución 'Python-Psyco' para mejorar el rendimiento.\n")
+except ImportError:
+    print _("""No se encontraron las librerías WX para Python. 
+    En distribuciones derivadas de Debian use el comando
+    'apt-get install python-wxgtk2.8'
 
+    Saliendo del Programa.....""")
+
+def main():
     programa = wx.App()
     try:
         FramePrincipal(None, -1, 'PyLabra')
@@ -32,10 +41,5 @@ try:
     finally:
         del programa
 
-except ImportError:
-    print """No se encontraron las librerías WX para Python. 
-    En distribuciones derivadas de Debian use el comando
-    'apt-get install python-wxgtk2.8'
-
-    Saliendo del Programa....."""
-
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,254 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-24 16:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: agregarIdioma.py:29 framePrincipal.py:93 nuevaPalabraBase.py:61
+msgid "Salir"
+msgstr ""
+
+#: agregarIdioma.py:30
+msgid "Crear Idioma"
+msgstr ""
+
+#: database.py:29
+msgid "Ocurrio un error con la Base de Datos: "
+msgstr ""
+
+#: framePrincipal.py:58
+msgid "C&rear Idioma\tCtrl+C"
+msgstr ""
+
+#: framePrincipal.py:59
+msgid "A&brir Idioma\tCtrl+A"
+msgstr ""
+
+#: framePrincipal.py:60
+msgid "&Guardar idioma\tCtrl+G"
+msgstr ""
+
+#: framePrincipal.py:61
+msgid "&Borrar Idioma\tCtrl+B"
+msgstr ""
+
+#: framePrincipal.py:62
+msgid "&Cerrar PyLabra\tCtrl+C"
+msgstr ""
+
+#: framePrincipal.py:63
+msgid "Spanish"
+msgstr ""
+
+#: framePrincipal.py:64
+msgid "English"
+msgstr ""
+
+#: framePrincipal.py:65
+msgid "&Acerca de..."
+msgstr ""
+
+#: framePrincipal.py:67
+msgid "&Archivo"
+msgstr ""
+
+#: framePrincipal.py:68
+msgid "&Preferencias"
+msgstr ""
+
+#: framePrincipal.py:69
+msgid "A&yuda"
+msgstr ""
+
+#: framePrincipal.py:79
+msgid "&Idioma del programa"
+msgstr ""
+
+#: framePrincipal.py:88
+msgid "Introduce una nueva palabra"
+msgstr ""
+
+#: framePrincipal.py:89
+msgid "Borra la base de datos"
+msgstr ""
+
+#: framePrincipal.py:90
+msgid "Muestra/Oculta el navegador"
+msgstr ""
+
+#: framePrincipal.py:92
+msgid "Acerca de..."
+msgstr ""
+
+#: framePrincipal.py:100
+msgid "Buscar en WordReference"
+msgstr ""
+
+#: framePrincipal.py:102
+msgid "Buscar"
+msgstr ""
+
+#: framePrincipal.py:158
+msgid "Introducir Nueva Palabra"
+msgstr ""
+
+#: framePrincipal.py:170
+#, python-format
+msgid ""
+"\n"
+"        <html>\n"
+"<body bgcolor=\"#CCCCCC\">\n"
+"    <center><table bgcolor=\"#458154\" width=\"100%%\" cellspacing=\"0\"\n"
+"    cellpadding=\"0\" border=\"1\">\n"
+"    <tr>\n"
+"        <td align=\"center\">\n"
+"            <h1>PyLabra Alpha release</h1>\n"
+"            <h3>Versi&oacute;n de wxPython: %s</h3>\n"
+"            Corriendo en Python %s<br>\n"
+"        </td>\n"
+"    </tr>\n"
+"    </table>\n"
+"    <h1>Autores de PyLabra:</h1>\n"
+"    <p>Alejandro Alcalde <em>(algui91)</em> -> <a href=\"mailto:"
+"algui91@gmail.com\">algui91@gmail.com</a></p>\n"
+"    <p>Francisco José Rodríguez <em>(haitike)</em> -> <a href=\"mailto:"
+"haitike@gmail.com\">haitike@gmail.com</a></p>\n"
+"\n"
+"    <p>\n"
+"    <font size=\"-1\">About parcialmente realizado de los ejemplos de "
+"wxPython.</font>\n"
+"    </p>\n"
+"    <p>\n"
+"    <font size=\"-1\">Licencia: http://www.gnu.org/licenses/gpl-3.0.html</"
+"font>\n"
+"    </p>\n"
+"    <p>\n"
+"    <font size=\"-1\">Sitio Web http://bashyc.blogspot.com</font>\n"
+"    </p>\n"
+"\n"
+"\n"
+"    <p><wxp module=\"wx\" class=\"Button\">\n"
+"        <param name=\"label\" value=\"Cerrar\">\n"
+"        <param name=\"id\"    value=\"ID_OK\">\n"
+"    </wxp></p>\n"
+"    </center>\n"
+"</body>\n"
+"</html>\n"
+msgstr ""
+
+#: framePrincipal.py:206
+msgid "Acerca de PyLabra..."
+msgstr ""
+
+#: framePrincipal.py:220
+msgid "Editar palabra"
+msgstr ""
+
+#: framePrincipal.py:311
+msgid "Introducir el nombre del nuevo idioma"
+msgstr ""
+
+#: listviewVirtual.py:22
+msgid "No"
+msgstr ""
+
+#: listviewVirtual.py:23 nuevaPalabraBase.py:42
+msgid "Palabra"
+msgstr ""
+
+#: listviewVirtual.py:24 nuevaPalabraBase.py:46
+msgid "Genero"
+msgstr ""
+
+#: listviewVirtual.py:25 nuevaPalabraBase.py:44
+msgid "Plural"
+msgstr ""
+
+#: listviewVirtual.py:26 nuevaPalabraBase.py:48
+msgid "Traduccion"
+msgstr ""
+
+#: listviewVirtual.py:27 nuevaPalabraBase.py:40
+msgid "Tipo"
+msgstr ""
+
+#: listviewVirtual.py:28
+msgid "Tema"
+msgstr ""
+
+#: listviewVirtual.py:29 nuevaPalabraBase.py:54
+msgid "Notas"
+msgstr ""
+
+#: main.py:28
+msgid ""
+"\n"
+"Se recomienda la instalación del compilador en tiempo de ejecución 'Python-"
+"Psyco' para mejorar el rendimiento.\n"
+msgstr ""
+
+#: main.py:30
+msgid ""
+"No se encontraron las librerías WX para Python. \n"
+"    En distribuciones derivadas de Debian use el comando\n"
+"    'apt-get install python-wxgtk2.8'\n"
+"\n"
+"    Saliendo del Programa....."
+msgstr ""
+
+#: menuContextual.py:25
+msgid "Editar Palabra"
+msgstr ""
+
+#: menuContextual.py:29
+msgid "Borrar Palabra"
+msgstr ""
+
+#: menuContextual.py:40
+msgid "Seguro que quieres Eliminar la palabra"
+msgstr ""
+
+#: nuevaPalabraBase.py:39
+msgid "Nueva Palabra"
+msgstr ""
+
+#: nuevaPalabraBase.py:41
+msgid "sust."
+msgstr ""
+
+#: nuevaPalabraBase.py:41
+msgid "verbo"
+msgstr ""
+
+#: nuevaPalabraBase.py:41
+msgid "adj."
+msgstr ""
+
+#: nuevaPalabraBase.py:41
+msgid "otro"
+msgstr ""
+
+#: nuevaPalabraBase.py:50
+msgid "Nivel"
+msgstr ""
+
+#: nuevaPalabraBase.py:58
+msgid "Guardar y Salir"
+msgstr ""
+
+#: nuevaPalabraBase.py:59
+msgid "Guardar y Continuar"
+msgstr ""

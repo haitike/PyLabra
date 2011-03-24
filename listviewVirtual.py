@@ -19,14 +19,14 @@ class ListViewVirtual(wx.ListCtrl):
     def __init__(self, parent, pos, size,array):
         wx.ListCtrl.__init__(self, parent,-1,pos, size,style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_VRULES|wx.LC_HRULES|wx.LC_SINGLE_SEL)
 
-        self.InsertColumn(0,"No")
-        self.InsertColumn(1,"Palabra")
-        self.InsertColumn(2,"Genero")
-        self.InsertColumn(3,"Plural")
-        self.InsertColumn(4,"Traduccion")
-        self.InsertColumn(5,"Tipo")        
-        self.InsertColumn(6,"Tema")
-        self.InsertColumn(7,"Notas")
+        self.InsertColumn(0,_("No"))
+        self.InsertColumn(1,_("Palabra"))
+        self.InsertColumn(2,_("Genero"))
+        self.InsertColumn(3,_("Plural"))
+        self.InsertColumn(4,_("Traduccion"))
+        self.InsertColumn(5,_("Tipo"))    
+        self.InsertColumn(6,_("Tema"))
+        self.InsertColumn(7,_("Notas"))
         self.SetColumnWidth(0,30)
         for i in range(1,8): self.SetColumnWidth(i,65)#wx.LIST_AUTOSIZE)        
         

@@ -26,8 +26,8 @@ class agregarIdioma(wx.Dialog):
         #self.panel1.SetBackgroundColour("BLUE")
         #self.panel2.SetBackgroundColour("RED")
         
-        self.bSalir= wx.Button(self,  wx.ID_CLOSE, 'Salir')
-        self.bCrearIdioma= wx.Button(self,  -1, 'Crear Idioma')
+        self.bSalir= wx.Button(self,  wx.ID_CLOSE, _('Salir'))
+        self.bCrearIdioma= wx.Button(self,  -1, _('Crear Idioma'))
         
         self.box = wx.BoxSizer(wx.VERTICAL)
         self.hBox = wx.BoxSizer(wx.HORIZONTAL)

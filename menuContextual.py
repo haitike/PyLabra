@@ -22,11 +22,11 @@ class MenuContextual(wx.Menu):
 
         self.parent = parent
         
-        editarPalabra = wx.MenuItem(self, wx.NewId(), 'Editar Palabra')
+        editarPalabra = wx.MenuItem(self, wx.NewId(), _('Editar Palabra'))
         self.AppendItem(editarPalabra)
         self.Bind(wx.EVT_MENU, self.OnEditarPalabra, id=editarPalabra.GetId())
 
-        borrarPalabra = wx.MenuItem(self, wx.NewId(), 'Borrar Palabra')
+        borrarPalabra = wx.MenuItem(self, wx.NewId(), _('Borrar Palabra'))
         self.AppendItem(borrarPalabra)
         self.Bind(wx.EVT_MENU, self.OnBorrarPalabra, id=borrarPalabra.GetId())
         
@@ -37,7 +37,7 @@ class MenuContextual(wx.Menu):
             self.parent.editarPalabra(item)
 
     def OnBorrarPalabra(self, event):
-        question = wx.MessageDialog(self.parent,'Seguro que quieres Eliminar la palabra', 'Question', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
+        question = wx.MessageDialog(self.parent,_('Seguro que quieres Eliminar la palabra'), 'Question', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
         if question.ShowModal() == wx.ID_YES:
             itemid = self.parent.lvPalabras.GetFirstSelected()
             if itemid != -1: # Si es -1, significa que no se seleciono nada
